@@ -13,7 +13,7 @@ const Button = ({ btnText, btnFun, path, scrollTo, className = "" }) => {
     <Link to={path}>
       <button
         onClick={btnFun ? btnFun : handleClick}
-        className={`${className} px-4 py-2 border rounded-lg  text-lightPurple`}
+        className={`${className} px-4 py-2 border rounded-lg  text-lightPurple font-semibold`}
       >
         {btnText}
       </button>

@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <>
       <div className="navContainer bg-darkPurple py-2 text-lightPurple">
-        <nav className="container mx-auto flex justify-between items-center">
+        <nav className="container w-[85%] mx-auto flex justify-between items-center">
           <div className="navLeft">
             <div className="brandLogo max-w-[200px]">
               <img
@@ -36,19 +36,19 @@ const Home = () => {
           <div className="navRight sm:block hidden">
             <div className="btnContainer flex gap-5">
               <Button btnText="Log In" path="/login" />
-              <Button btnText="Sign Up" path="sign-up" />
+              <Button btnText="Sign Up" path="signup" />
             </div>
           </div>
         </nav>
       </div>
 
       <section className="HeroSection mt-20 min-h-[85vh] flex items-center">
-        <div className="container mx-auto flex md:flex-row flex-col justify-center ">
+        <div className="container w-[85%] mx-auto flex md:flex-row flex-col justify-center ">
           <div
             className="heroLeft md:w-[50%] flex items-center justify-center"
             data-aos="fade-up"
           >
-            <div className="heroInfo sm:w-auto w-[80%] mx-auto">
+            <div className="heroInfo w-[80%] mx-auto">
               <div className="upperInfo">
                 <span className="text-sm font-semibold">Welcome To</span>
                 <h1 className="lg:text-[72px] md:text-[50px] text-4xl font-bold !text-darkPurple my-3">

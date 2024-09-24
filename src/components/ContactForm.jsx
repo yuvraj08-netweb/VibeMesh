@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import Button from "./Button";
 
+
 const ContactForm = () => {
 
     const schema = yup.object().shape({
@@ -43,7 +44,7 @@ const ContactForm = () => {
           control={control}
           render={({ field }) => <input {...field} placeholder="Enter Full Name" />}
         />
-        <p>{errors.fullName?.message}</p>
+        <p className="errorPara">{errors.fullName?.message}</p>
       </div>
       <div className="formElement">
         <Controller
@@ -51,7 +52,7 @@ const ContactForm = () => {
           control={control}
           render={({ field }) => <input {...field} placeholder="Enter Email" />}
         />
-        <p>{errors.email?.message}</p>
+        <p className="errorPara">{errors.email?.message}</p>
       </div>
       <div className="formElement">
         <Controller
@@ -59,7 +60,7 @@ const ContactForm = () => {
           control={control}
           render={({ field }) => <textarea {...field} placeholder="Your message..." />}
         />
-        <p>{errors.message?.message}</p>
+        <p className="errorPara">{errors.message?.message}</p>
       </div>
       
       <div className="formElement">

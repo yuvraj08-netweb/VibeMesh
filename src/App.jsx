@@ -5,6 +5,8 @@ import SignUp from "./pages/SignUp";
 import UserArea from "./pages/UserArea";
 import { useEffect } from "react";
 import initializeAOS from "./animations/aos";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   useEffect(() => {
@@ -13,6 +15,7 @@ function App() {
 
   return (
     <div className="font-serif">
+      <ToastContainer position="bottom-right" theme="dark" autoClose={3000} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
