@@ -1,5 +1,5 @@
-import Button from "../components/Button";
-import LoginForm from "../components/LoginForm";
+import Button from "../components/Common/Button";
+import LoginForm from "../components/Forms/LoginForm";
 
 const Login = () => {
   return (

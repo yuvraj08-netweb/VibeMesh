@@ -1,5 +1,5 @@
-import Button from "../components/Button"
-import SignUpForm from "../components/SignUpForm"
+import Button from "../components/Common/Button"
+import SignUpForm from "../components/Forms/SignUpForm"
 
 const SignUp = () => {
   return (

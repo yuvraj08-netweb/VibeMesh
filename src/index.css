@@ -2,83 +2,253 @@
 @tailwind components;
 @tailwind utilities;
 
-input,textarea{
-    border: 1px solid black;
-    border-radius: 7px;
-    padding: 10px;
-    
-    width: 100% !important;
+input,
+textarea {
+  border: 1px solid black;
+  border-radius: 7px;
+  padding: 10px;
+
+  width: 100% !important;
 }
-.formElement{
-    margin-bottom: 20px;
+.formElement {
+  margin-bottom: 20px;
 }
-.Login{
-    background-image: url("../src/assets/chat-bg.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.Login {
+  background-image: url("../src/assets/chat-bg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.glassCard{
-    background: #535c9177;
-box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-backdrop-filter: blur( 4px );
--webkit-backdrop-filter: blur( 4px );
-border-radius: 10px;
-border: 1px solid rgba( 255, 255, 255, 0.18 );
+.glassCard {
+  background: #535c9177;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
-.loginForm input{
-    background: #ffffff1e;
-    border: 1px solid #535C91;
-    outline: none;
+.loginForm input {
+  background: #ffffff1e;
+  border: 1px solid #535c91;
+  outline: none;
+  color: aliceblue;
 }
-.errorPara{
-    color: rgb(245, 62, 62);
-    font-weight: bold;
-    font-size: 11px;
-    margin-top: 10px;
+.errorPara {
+  color: rgb(245, 62, 62);
+  font-weight: bold;
+  font-size: 11px;
+  margin-top: 10px;
 }
 
-/* From Uiverse.io by mrpumps31232 */ 
+/* From Uiverse.io by mrpumps31232 */
 .loading-wave {
-    width: 300px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-  }
-  
-  .loading-bar {
-    width: 20px;
+  width: 300px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.loading-bar {
+  width: 20px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: #3498db;
+  border-radius: 5px;
+  animation: loading-wave-animation 1s ease-in-out infinite;
+}
+
+.loading-bar:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.loading-bar:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.loading-bar:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@keyframes loading-wave-animation {
+  0% {
     height: 10px;
-    margin: 0 5px;
-    background-color: #3498db;
-    border-radius: 5px;
-    animation: loading-wave-animation 1s ease-in-out infinite;
   }
-  
-  .loading-bar:nth-child(2) {
-    animation-delay: 0.1s;
+
+  50% {
+    height: 50px;
   }
-  
-  .loading-bar:nth-child(3) {
-    animation-delay: 0.2s;
+
+  100% {
+    height: 10px;
   }
-  
-  .loading-bar:nth-child(4) {
-    animation-delay: 0.3s;
+}
+
+.userArea {
+  background: url("https://images.unsplash.com/photo-1706886272687-c043824f89cf?q=80&w=1033&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.centerCard {
+  background: #c7c8ce2c;
+  box-shadow: 0 8px 32px 0 rgba(243, 243, 243, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.searchBar input {
+  background: #ffffff2f;
+  border: 1px solid #535c91;
+  outline: none;
+  color: aliceblue;
+}
+.searchBar input:focus {
+  background: #ffffff62;
+  border: 1px solid #535c91;
+  outline: none;
+  color: rgb(31, 31, 31);
+}
+
+/* From Uiverse.io by ZacharyCrespin */
+@keyframes square-animation {
+  0% {
+    left: 0;
+    top: 0;
   }
-  
-  @keyframes loading-wave-animation {
-    0% {
-      height: 10px;
-    }
-  
-    50% {
-      height: 50px;
-    }
-  
-    100% {
-      height: 10px;
-    }
+
+  10.5% {
+    left: 0;
+    top: 0;
   }
-  
+
+  12.5% {
+    left: 32px;
+    top: 0;
+  }
+
+  23% {
+    left: 32px;
+    top: 0;
+  }
+
+  25% {
+    left: 64px;
+    top: 0;
+  }
+
+  35.5% {
+    left: 64px;
+    top: 0;
+  }
+
+  37.5% {
+    left: 64px;
+    top: 32px;
+  }
+
+  48% {
+    left: 64px;
+    top: 32px;
+  }
+
+  50% {
+    left: 32px;
+    top: 32px;
+  }
+
+  60.5% {
+    left: 32px;
+    top: 32px;
+  }
+
+  62.5% {
+    left: 32px;
+    top: 64px;
+  }
+
+  73% {
+    left: 32px;
+    top: 64px;
+  }
+
+  75% {
+    left: 0;
+    top: 64px;
+  }
+
+  85.5% {
+    left: 0;
+    top: 64px;
+  }
+
+  87.5% {
+    left: 0;
+    top: 32px;
+  }
+
+  98% {
+    left: 0;
+    top: 32px;
+  }
+
+  100% {
+    left: 0;
+    top: 0;
+  }
+}
+
+.pageloader {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  transform: rotate(45deg);
+}
+
+.loader-square {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  margin: 2px;
+  border-radius: 0px;
+  background: white;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  animation: square-animation 10s ease-in-out infinite both;
+}
+
+.loader-square:nth-of-type(0) {
+  animation-delay: 0s;
+}
+
+.loader-square:nth-of-type(1) {
+  animation-delay: -1.4285714286s;
+}
+
+.loader-square:nth-of-type(2) {
+  animation-delay: -2.8571428571s;
+}
+
+.loader-square:nth-of-type(3) {
+  animation-delay: -4.2857142857s;
+}
+
+.loader-square:nth-of-type(4) {
+  animation-delay: -5.7142857143s;
+}
+
+.loader-square:nth-of-type(5) {
+  animation-delay: -7.1428571429s;
+}
+
+.loader-square:nth-of-type(6) {
+  animation-delay: -8.5714285714s;
+}
+
+.loader-square:nth-of-type(7) {
+  animation-delay: -10s;
+}

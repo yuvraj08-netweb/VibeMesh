@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
-import Button from "./Button";
+import Button from "../Common/Button";
 
 
 const ContactForm = () => {

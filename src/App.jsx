@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import initializeAOS from "./animations/aos";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NotFound from "./pages/NotFound";
 
 function App() {
   useEffect(() => {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/userArea" element={<UserArea />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </div>
   );

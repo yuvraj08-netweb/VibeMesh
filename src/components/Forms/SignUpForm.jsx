@@ -1,13 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
-import Button from "./Button";
+import Button from "../Common/Button";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase/config";
+import { auth, db } from "../../firebase/config";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
-import upload from "../firebase/upload";
+import upload from "../../firebase/upload";
 import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
@@ -86,7 +86,7 @@ const SignUpForm = () => {
     console.log(file);
   };
   return (
-    <form className="max-w-[450px] loginForm">
+    <form className="md:max-w-[450px] w-[90%] loginForm">
       <div className="formElement">
         <input
           type="file"
@@ -140,7 +140,7 @@ const SignUpForm = () => {
         </div>
          : <Button
           btnText={"Register"}
-          className="text-darkPurple bg-lightPurple border-none"
+          className="!text-darkPurple bg-lightPurple border-none"
           btnFun={handleSubmit(submitForm)}
         />
         }

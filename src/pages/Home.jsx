@@ -1,5 +1,5 @@
-import Button from "../components/Button";
-import ContactForm from "../components/ContactForm";
+import Button from "../components/Common/Button";
+import ContactForm from "../components/Forms/ContactForm";
 
 const Home = () => {
   return (
