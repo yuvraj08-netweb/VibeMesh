@@ -12,8 +12,7 @@ async function Upload(imageUpload) {
 
     // Get the download URL
     const url = await getDownloadURL(snapshot.ref);
-
-    console.log(url);  // Log the URL if you want to check it
+    
     return url;  // Return the URL after getting it
   } catch (error) {
     console.error("Error uploading image:", error);

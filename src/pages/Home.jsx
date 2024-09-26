@@ -1,7 +1,14 @@
+import { useSelector } from "react-redux";
 import Button from "../components/Common/Button";
 import ContactForm from "../components/Forms/ContactForm";
+import { useEffect } from "react";
 
 const Home = () => {
+  const { isUser, userDetails } = useSelector((state) => state.user);
+
+useEffect(() => {
+}, [isUser, userDetails]);
+
   return (
     <>
       <div className="navContainer bg-darkPurple py-2 text-lightPurple">
@@ -34,10 +41,16 @@ const Home = () => {
             </ul>
           </div>
           <div className="navRight sm:block hidden">
-            <div className="btnContainer flex gap-5">
-              <Button btnText="Log In" path="/login" />
-              <Button btnText="Sign Up" path="signup" />
-            </div>
+            {!isUser ? (
+              <>
+                <div className="btnContainer flex gap-5">
+                  <Button btnText="Log In" path="/login" />
+                  <Button btnText="Sign Up" path="signup" />
+                </div>
+              </>
+            ) : (
+              <>{userDetails.fullName}</>
+            )}
           </div>
         </nav>
       </div>
@@ -67,7 +80,10 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="heroRight md:w-[50%] md:block hidden" data-aos="fade-left">
+          <div
+            className="heroRight md:w-[50%] md:block hidden"
+            data-aos="fade-left"
+          >
             <div className="heroImgContainer">
               <img src="../../src/assets/svg/landing.svg" alt="illustration" />
             </div>
@@ -79,9 +95,7 @@ const Home = () => {
         className="AboutSection min-h-[100vh] bg-lightPurple flex  items-center md:p-0 py-20"
         id="About"
       >
-        <div
-          className="container mx-auto  flex  md:flex-row flex-col items-center"
-        >
+        <div className="container mx-auto  flex  md:flex-row flex-col items-center">
           <div className="aboutLeft md:w-[50%]">
             <div className="aboutImage w-[80%] m-auto" data-aos="flip-up">
               <img
@@ -92,7 +106,10 @@ const Home = () => {
             </div>
           </div>
           <div className="aboutRight md:w-[50%] md:mt-0 mt-20">
-            <div className="aboutInfo w-[80%] md:m-0 mx-auto  !text-[#fff]" data-aos="fade-down-left">
+            <div
+              className="aboutInfo w-[80%] md:m-0 mx-auto  !text-[#fff]"
+              data-aos="fade-down-left"
+            >
               <h1 className="text-4xl font-bold">About Us</h1>
               <p className="my-10 ">
                 At VibeMesh, we believe in the power of connection. Our chat
@@ -173,7 +190,7 @@ const Home = () => {
             </ul>
           </div>
           <div className="footerCenterThree lg:mt-0 mt-10">
-          <h3 className="mb-8 border-b-2 max-w-max mx-auto">Page Links</h3>
+            <h3 className="mb-8 border-b-2 max-w-max mx-auto">Page Links</h3>
             <ul>
               <li>
                 <Button

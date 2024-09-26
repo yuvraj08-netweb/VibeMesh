@@ -56,7 +56,7 @@ const SignUpForm = () => {
       let imgUrl = "";
       if (img) {
         imgUrl = await upload(img);
-        console.log(imgUrl);
+
         if (user) {
           await setDoc(doc(db, "Users", user.uid), {
             fullName: data.fullName,
@@ -73,17 +73,15 @@ const SignUpForm = () => {
       navigate("/login");
 
     } catch (error) {
-      console.log(error.message);
       toast.error(`Registration Failed Due To ${error.message}`);
     }
     reset();
 
-    console.log(data, "data");
   };
 
   const handleFileChange = (file) => {
     setImg(file);
-    console.log(file);
+ 
   };
   return (
     <form className="md:max-w-[450px] w-[90%] loginForm">

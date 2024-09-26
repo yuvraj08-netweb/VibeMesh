@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
+
 const LoginForm = () => {
   const schema = yup.object().shape({
     emailId: yup
@@ -37,7 +38,6 @@ const LoginForm = () => {
   const submitForm = async (data) => {
     try {
       await signInWithEmailAndPassword(auth, data.emailId, data.password);
-      console.log(data);
       reset();
       navigate(`/userArea`);
     } catch (error) {

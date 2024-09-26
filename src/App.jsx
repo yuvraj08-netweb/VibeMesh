@@ -8,11 +8,17 @@ import initializeAOS from "./animations/aos";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./pages/NotFound";
+import { useDispatch } from "react-redux";
+import { fetchUserData } from "./reducers/userSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     initializeAOS();
-  }, []);
+    dispatch(fetchUserData());
+  },[dispatch]);
+
 
   return (
     <div className="font-serif">

@@ -1,7 +1,14 @@
 import { useState } from "react";
+import FriendsCard from "./FriendsCard";
+import GroupCard from "./GroupCard";
 
 const Tabs = () => {
-  const [openTab, setOpenTab] = useState("chat");
+  const [openTab, setOpenTab] = useState("");
+
+  const switchTab = (tab) =>{
+    setOpenTab(tab)
+  }
+
   return (
     <>
       <div className="flex flex-wrap">
@@ -15,7 +22,7 @@ const Tabs = () => {
                 }
                 onClick={(e) => {
                   e.preventDefault();
-                  setOpenTab("chat");
+                  switchTab("chat");
                 }}
                 data-toggle="tab"
                 href="#singleChat"
@@ -31,7 +38,7 @@ const Tabs = () => {
                 }
                 onClick={(e) => {
                   e.preventDefault();
-                  setOpenTab("group");
+                  switchTab("group");
                 }}
                 data-toggle="tab"
                 href="#groupChat"
@@ -50,12 +57,32 @@ const Tabs = () => {
                 <div className={openTab === "chat" ? "block" : "hidden"} id="singleChat">
                   {/* display all available chats */}
                   <div className="friendsCol">
+                    {
+                      // eslint-disable-next-line no-constant-condition
+                      true 
+                      ?
+                       <FriendsCard
+                        friendName={"Yuvraj"}
+                        friendAvatar={"https://www.pngkey.com/png/full/73-730434_04-dummy-avatar.png"}
+                       />
+                       :
                     <p>No Friends To Show</p>
+                    }
                   </div>
                 </div>
                 {/* Content For The Group Chat */}
                 <div className={openTab === "group" ? "block" : "hidden"} id="groupChat">
-                  <p>No Groups To Show</p>
+                {
+                      // eslint-disable-next-line no-constant-condition
+                      true 
+                      ?
+                       <GroupCard
+                        groupName={"Friends Forever"}
+                        groupAvatar={"https://static.vecteezy.com/system/resources/previews/028/711/754/non_2x/diverse-group-of-people-chat-with-a-personal-coach-small-business-ai-generated-free-png.png"}
+                       />
+                       :
+                    <p>No Friends To Show</p>
+                    }
                 </div>
               </div>
             </div>
