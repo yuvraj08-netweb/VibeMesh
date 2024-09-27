@@ -1,14 +1,22 @@
 import { useSelector } from "react-redux";
 import Button from "../components/Common/Button";
 import ContactForm from "../components/Forms/ContactForm";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import PageLoader from "../components/Common/PageLoader";
 
 const Home = () => {
-  const { isUser, userDetails } = useSelector((state) => state.user);
+  const { isUser, userDetails, loading} = useSelector((state) => state.user);
+  const [navOpen, setNavOpen] = useState(false);
 
-  useEffect(() => {}, [isUser, userDetails]);
+  const toggleNavOpen = () => {
+    setNavOpen(!navOpen);
+  }
+
+  useEffect(() => { }, [isUser, userDetails]);
 
   return (
+    <>
+    { !loading ?
     <>
       <div className="navContainer bg-darkPurple py-2 text-lightPurple">
         <nav className="container w-[85%] mx-auto flex justify-between items-center">
@@ -22,7 +30,7 @@ const Home = () => {
             </div>
           </div>
           <div className="navCenter sm:block hidden">
-            <ul className="flex gap-5">
+            <ul className="flex gap-3">
               <li>
                 <Button
                   btnText={"About"}
@@ -74,7 +82,95 @@ const Home = () => {
               </>
             )}
           </div>
+          <div className="mobileNavToggler sm:hidden block">
+            <Button
+              btnText={
+                <>
+                  <i class="fa-solid fa-bars"></i>
+                </>
+              }
+              className="!text-[#fff]"
+              btnFun={toggleNavOpen}
+            />
+          </div>
         </nav>
+
+        {
+          navOpen ?
+            <div data-aos="fade-right" className="mobileNav fixed left-0 top-0 min-w-[300px] min-h-full bg-darkPurple z-20">
+              <div className="w-full text-center mt-10">
+                <h2 className="text-3xl">VibeMesh.</h2>
+              </div>
+              <div className="navLinks mt-10 p-3 flex items-center justify-center">
+                <ul className="flex flex-col gap-10">
+                  <li>
+                    {!isUser ? (
+                      ""
+                    ) : (
+                      <>
+                        <div className="userLoggedIn flex flex-col tems-center gap-2">
+                          <div className="userInfo flex items-center gap-4">
+                            <div className="userPP">
+                              <img
+                                src={userDetails.avatar}
+                                alt=""
+                                className="w-[40px] rounded-[100%]"
+                              />
+                            </div>
+                            <div className="userName">{userDetails.fullName}</div>
+
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </li>
+                  <li>
+                    <Button
+                      btnText={"About"}
+                      scrollTo="About"
+                      className="border-none p-0 "
+                    />
+                  </li>
+                  <li>
+                    <Button
+                      btnText={"Contact"}
+                      scrollTo="Contact"
+                      className="border-none p-0"
+                    />
+                  </li>
+                  <li>
+                    {!isUser ? (
+                      <>
+                        <div className="btnContainer flex gap-5">
+                          <Button btnText="Log In" path="/login" />
+                          <Button btnText="Sign Up" path="signup" />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="userLoggedIn flex flex-col tems-center gap-2">
+
+                          <div className="chatAreaBtn">
+                            <Button
+                              btnText={
+                                <>
+                                  Go To Chats &nbsp;
+                                  <i className="fa-solid fa-chart-area"></i>
+                                </>
+                              }
+                              path="/userArea"
+                              className="border-none"
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            : ""
+        }
       </div>
 
       <section className="HeroSection mt-20 min-h-[85vh] flex items-center">
@@ -130,7 +226,7 @@ const Home = () => {
           <div className="aboutRight md:w-[50%] md:mt-0 mt-20">
             <div
               className="aboutInfo w-[80%] md:m-0 mx-auto  !text-[#fff]"
-              data-aos="fade-down-left"
+              data-aos="fade-down"
             >
               <h1 className="text-4xl font-bold">About Us</h1>
               <p className="my-10 ">
@@ -252,6 +348,8 @@ const Home = () => {
           </div>
         </div>
       </footer>
+    </> : <PageLoader/>
+    }
     </>
   );
 };

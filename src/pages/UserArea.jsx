@@ -2,18 +2,20 @@ import Button from "../components/Common/Button";
 import { useNavigate } from "react-router-dom";
 import NoChatSelected from "../components/UserArea/NoChatSelected";
 import Tabs from "../components/UserArea/Tabs";
-import PageLoader from "../components/Common/pageLoader";
+import PageLoader from "../components/Common/PageLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData, fetchUsers, logOutUser } from "../reducers/userSlice";
 import ChatSelected from "../components/UserArea/ChatSelected";
 import { useEffect, useState } from "react";
-import Modal from "../components/UserArea/Modal";
+import Modal from "../components/UserArea/AddFriendModal";
+import InfoModal from "../components/UserArea/UserInfoModal";
 
 const UserArea = () => {
   const { userDetails, loading, selectedChat } = useSelector(
     (state) => state.user
   );
   const [openModal, setOpenModal] = useState(false);
+  const [viewInfo, setViewInfo] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,6 +44,10 @@ const UserArea = () => {
   const handleAddFriend = () => {
     setOpenModal(true);
   };
+
+  const handleViewInfo =()=>{
+    setViewInfo(true);
+  }
   return (
     <div>
       {userDetails ? (
@@ -59,7 +65,7 @@ const UserArea = () => {
                 >
                   {/* For User Avatar and Logout */}
                   <div className="top-section flex justify-between items-center p-4 ">
-                    <div className="userInfo flex items-center">
+                    <div className="userInfo flex items-center cursor-pointer" onClick={handleViewInfo}>
                       <div className="userAvatar max-w-max">
                         <img
                           src={userDetails.avatar}
@@ -133,6 +139,7 @@ const UserArea = () => {
               </div>
             </div>
             <Modal open={openModal} onClose={() => setOpenModal(false)} />
+            <InfoModal open={viewInfo} onClose={() => setViewInfo(false)}/>
           </div>
         </>
       ) : (

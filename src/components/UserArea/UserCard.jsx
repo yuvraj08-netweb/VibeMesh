@@ -3,16 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "../Common/Button";
 import { addUserFriends } from "../../reducers/userSlice";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
-const UserCard = ({ user }) => {
+const UserCard = ({func, user }) => {
   const { userDetails } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  useEffect(()=>{
 
+  },[userDetails])
   const handleAddFriend = () => {
     dispatch(addUserFriends({ userDetails, user }))
       .unwrap()
       .then(() => {
         toast.success("User Added As Friend!");
+        func();
       });
   };
 

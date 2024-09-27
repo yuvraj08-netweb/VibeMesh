@@ -70,7 +70,7 @@ const Modal = ({ open, onClose }) => {
                         {friendFiltered.length < 1
                           ? "No users found"
                           : friendFiltered.map((user, index) => (
-                              <UserCard user={user} key={index} />
+                              <UserCard func={onClose} user={user} key={index} />
                             ))}
                       </li>
                     </ul>

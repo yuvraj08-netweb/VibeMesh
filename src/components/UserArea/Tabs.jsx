@@ -4,7 +4,7 @@ import GroupCard from "./GroupCard";
 import { useSelector } from "react-redux";
 
 const Tabs = () => {
-  const [openTab, setOpenTab] = useState("");
+  const [openTab, setOpenTab] = useState("chat");
   const {userDetails} = useSelector(state=>state.user)
 
   const switchTab = (tab) => {
