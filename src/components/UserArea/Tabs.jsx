@@ -1,23 +1,97 @@
 import { useState } from "react";
 import FriendsCard from "./FriendsCard";
 import GroupCard from "./GroupCard";
+import { useSelector } from "react-redux";
 
 const Tabs = () => {
   const [openTab, setOpenTab] = useState("");
+  const {userDetails} = useSelector(state=>state.user)
 
-  const switchTab = (tab) =>{
-    setOpenTab(tab)
-  }
+  const switchTab = (tab) => {
+    setOpenTab(tab);
+  };
+
+  // const Friends = [
+  //   {
+  //     fullName: "Yuvraj Singh",
+  //     avatar:imgUrl,
+  //     messages: [
+  //       {
+  //         text: `How can we help?
+  // You can ask questions like:
+  // Whats Preline UI?
+  // How many Starter Pages & Examples are there?
+  // Is there a PRO version?`,
+  //         sent: true,
+  //         sender: "user",
+  //       },
+  //       {
+  //         text: `I want to build a chat system and automatically scroll to the bottom when entering the window and when new messages come in.`,
+  //         sent: true,
+  //         sender: "friend",
+  //       },
+  //       {
+  //         text: `How can we help?
+  // You can ask questions like:
+  // Whats Preline UI?
+  // How many Starter Pages & Examples are there?
+  // Is there a PRO version?`,
+  //         sent: true,
+  //         sender: "user",
+  //       },
+  //       {
+  //         text: `I want to build a chat system and automatically scroll to the bottom when entering the window and when new messages come in.`,
+  //         sent: false,
+  //         sender: "friend",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     fullName: "Lakshay",
+  //     avatar: imgUrl,
+  //     messages: [
+  //       {
+  //         text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five`,
+  //         sent: false,
+  //         sender: "user",
+  //       },
+  //       {
+  //         text: `I want to build a chat system and automatically scroll to the bottom when entering the window and when new messages come in.`,
+  //         sent: true,
+  //         sender: "friend",
+  //       },
+  //       {
+  //         text: `How can we help?
+  // You can ask questions like:
+  // Whats Preline UI?
+  // How many Starter Pages & Examples are there?
+  // Is there a PRO version?`,
+  //         sent: true,
+  //         sender: "user",
+  //       },
+  //       {
+  //         text: `I want to build a chat system and automatically scroll to the bottom when entering the window and when new messages come in.`,
+  //         sent: true,
+  //         sender: "friend",
+  //       },
+  //     ],
+  //   },
+  // ];
 
   return (
     <>
       <div className="flex flex-wrap">
         <div className="w-full">
-            {/* Tabs For Switching Between Single Chat And Group Chat */}
-          <ul className="flex list-none flex-wrap flex-row border-b" role="tablist">
+          {/* Tabs For Switching Between Single Chat And Group Chat */}
+          <ul
+            className="flex list-none flex-wrap flex-row border-b"
+            role="tablist"
+          >
             {/* Single Chat */}
             <li className="flex-auto text-center border-r">
-              <a className={ "text-lg font-bold uppercase py-3 shadow-lg rounded block leading-normal " +
+              <a
+                className={
+                  "text-lg font-bold uppercase py-3 shadow-lg rounded block leading-normal " +
                   (openTab === "chat" ? `text-[#b6b4eb]` : ` text-[#7c7c7c]`)
                 }
                 onClick={(e) => {
@@ -33,7 +107,9 @@ const Tabs = () => {
             </li>
             {/* Group Chat */}
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-              <a className={"text-lg font-bold uppercase py-3 shadow-lg rounded block leading-normal " +
+              <a
+                className={
+                  "text-lg font-bold uppercase py-3 shadow-lg rounded block leading-normal " +
                   (openTab === "group" ? `text-[#b6b4eb]` : ` text-[#7c7c7c]`)
                 }
                 onClick={(e) => {
@@ -49,40 +125,51 @@ const Tabs = () => {
             </li>
           </ul>
 
-            {/* Actual Content To Show In The Tabs */}
+          {/* Actual Content To Show In The Tabs */}
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">
                 {/* Content For Single Chat */}
-                <div className={openTab === "chat" ? "block" : "hidden"} id="singleChat">
+                <div
+                  className={openTab === "chat" ? "block" : "hidden"}
+                  id="singleChat"
+                >
                   {/* display all available chats */}
                   <div className="friendsCol">
                     {
                       // eslint-disable-next-line no-constant-condition
-                      true 
-                      ?
-                       <FriendsCard
-                        friendName={"Yuvraj"}
-                        friendAvatar={"https://www.pngkey.com/png/full/73-730434_04-dummy-avatar.png"}
-                       />
-                       :
-                    <p>No Friends To Show</p>
+                      true ? (
+                        userDetails.friends.map((friend,idx)=>{
+                          return (
+                            <FriendsCard 
+                            friend = {friend}
+                            key={idx}
+                          />
+                          )
+                        })
+                      
+                      ) : (
+                        <p>No Friends To Show</p>
+                      )
                     }
                   </div>
                 </div>
                 {/* Content For The Group Chat */}
-                <div className={openTab === "group" ? "block" : "hidden"} id="groupChat">
-                {
-                      // eslint-disable-next-line no-constant-condition
-                      true 
-                      ?
-                       <GroupCard
-                        groupName={"Friends Forever"}
-                        groupAvatar={"https://static.vecteezy.com/system/resources/previews/028/711/754/non_2x/diverse-group-of-people-chat-with-a-personal-coach-small-business-ai-generated-free-png.png"}
-                       />
-                       :
-                    <p>No Friends To Show</p>
-                    }
+                <div
+                  className={openTab === "group" ? "block" : "hidden"}
+                  id="groupChat"
+                >
+                  {
+                    // eslint-disable-next-line no-constant-condition
+                    true ? (
+                      <GroupCard
+                        groupName="Friends Forever"
+                        groupAvatar="https://static.vecteezy.com/system/resources/previews/028/711/754/non_2x/diverse-group-of-people-chat-with-a-personal-coach-small-business-ai-generated-free-png.png"
+                      />
+                    ) : (
+                      <p>No Friends To Show</p>
+                    )
+                  }
                 </div>
               </div>
             </div>

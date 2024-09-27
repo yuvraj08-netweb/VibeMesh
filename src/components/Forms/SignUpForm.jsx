@@ -11,6 +11,19 @@ import upload from "../../firebase/upload";
 import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  // Toggle confirm password visibility
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword((prev) => !prev);
+  };
+
   const schema = yup.object().shape({
     fullName: yup.string().required("Please Provide Your Name"),
     emailId: yup
@@ -20,15 +33,24 @@ const SignUpForm = () => {
         /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
         "Email is Invalid"
       ),
-    password: yup.string().min(6).max(20).required("Password is Required"),
+    password: yup
+      .string()
+      .required("Password is required!")
+      .min(8, "Password must be at least 8 characters!")
+      .matches(/[a-z]/, "At least one lowercase character!")
+      .matches(/[A-Z]/, "At least one uppercase character!")
+      .matches(
+        /[a-zA-Z]+[^a-zA-Z\s]+/,
+        "At least 1 number or special character (@, !, #, etc)!."
+      ),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password")], "Passwords Don't Match")
-      .required("Please Re-enter the Password"),
+      .required("Password confirmation is required!")
+      .oneOf([yup.ref("password"), null], "Passwords must match!"),
   });
 
   const [img, setImg] = useState(null);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     control,
     handleSubmit,
@@ -54,35 +76,37 @@ const SignUpForm = () => {
 
       // Upload the file only if an image is selected
       let imgUrl = "";
-      if (img) {
-        imgUrl = await upload(img);
 
-        if (user) {
-          await setDoc(doc(db, "Users", user.uid), {
-            fullName: data.fullName,
-            email: user.email,
-            id: user.uid,
-            blocked: false,
-            avatar: imgUrl,
-          });
-        }
+      imgUrl =
+        (await upload(img)) ||
+        "https://smaabacus.com/themes/user/assets_old/img/dd/avatar/male.png";
+
+      if (user) {
+        await setDoc(doc(db, "Users", user.uid), {
+          id: user.uid,
+          fullName: data.fullName,
+          email: user.email,
+          avatar: imgUrl,
+          blocked: false,
+          friends: [],
+          groups: [],
+          messages: [],
+        });
       }
 
       toast.success("User Registered Successfully!");
-      setLoading(false)
+      setLoading(false);
       navigate("/login");
-
     } catch (error) {
       toast.error(`Registration Failed Due To ${error.message}`);
     }
     reset();
-
   };
 
   const handleFileChange = (file) => {
     setImg(file);
- 
   };
+  
   return (
     <form className="md:max-w-[450px] w-[90%] loginForm">
       <div className="formElement">
@@ -107,42 +131,74 @@ const SignUpForm = () => {
         />
         <p className="errorPara">{errors.emailId?.message}</p>
       </div>
-      <div className="formElement">
+      <div className="formElement relative">
         <Controller
           name="password"
           control={control}
           render={({ field }) => (
-            <input {...field} placeholder="Enter Password" type="password" />
+            <>
+              <input
+                {...field}
+                placeholder="Enter Password"
+                type={showPassword ? "text" : "password"}
+                id="password"
+              />
+              <span
+                className="absolute top-3 right-5 text-[#fff] cursor-pointer"
+                onClick={togglePasswordVisibility}
+              >
+                <i
+                  className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                ></i>
+              </span>
+            </>
           )}
         />
         <p className="errorPara">{errors.password?.message}</p>
       </div>
 
-      <div className="formElement">
+      <div className="formElement relative">
         <Controller
           name="confirmPassword"
           control={control}
           render={({ field }) => (
-            <input {...field} type="password" placeholder="Confirm Password" />
+            <>
+              <input
+                {...field}
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                id="confirmPassword"
+              />
+              <span
+                className="absolute top-3 right-5 text-[#fff] cursor-pointer"
+                onClick={toggleConfirmPasswordVisibility}
+              >
+                <i
+                  className={`fa ${
+                    showConfirmPassword ? "fa-eye-slash" : "fa-eye"
+                  }`}
+                ></i>
+              </span>
+            </>
           )}
         />
         <p className="errorPara">{errors.confirmPassword?.message}</p>
       </div>
       <div className="formElement">
-        {
-          loading ? <div className="loading-wave">
-          <div className="loading-bar" />
-          <div className="loading-bar" />
-          <div className="loading-bar" />
-          <div className="loading-bar" />
-        </div>
-         : <Button
-          btnText={"Register"}
-          className="!text-darkPurple bg-lightPurple border-none"
-          btnFun={handleSubmit(submitForm)}
-        />
-        }
-        
+        {loading ? (
+          <div className="loading-wave">
+            <div className="loading-bar" />
+            <div className="loading-bar" />
+            <div className="loading-bar" />
+            <div className="loading-bar" />
+          </div>
+        ) : (
+          <Button
+            btnText={"Register"}
+            className="!text-darkPurple bg-lightPurple border-none"
+            btnFun={handleSubmit(submitForm)}
+          />
+        )}
       </div>
     </form>
   );

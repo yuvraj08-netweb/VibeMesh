@@ -6,8 +6,7 @@ import { useEffect } from "react";
 const Home = () => {
   const { isUser, userDetails } = useSelector((state) => state.user);
 
-useEffect(() => {
-}, [isUser, userDetails]);
+  useEffect(() => {}, [isUser, userDetails]);
 
   return (
     <>
@@ -49,7 +48,30 @@ useEffect(() => {
                 </div>
               </>
             ) : (
-              <>{userDetails.fullName}</>
+              <>
+                <div className="userLoggedIn flex items-center gap-2">
+                  <div className="userPP">
+                    <img
+                      src={userDetails.avatar}
+                      alt=""
+                      className="w-[40px] rounded-[100%]"
+                    />
+                  </div>
+                  <div className="userName">{userDetails.fullName}</div>
+                  <div className="chatAreaBtn">
+                    <Button
+                      btnText={
+                        <>
+                          Chat &nbsp;
+                          <i className="fa-solid fa-chart-area"></i>
+                        </>
+                      }
+                      path="/userArea"
+                      className="border-none"
+                    />
+                  </div>
+                </div>
+              </>
             )}
           </div>
         </nav>

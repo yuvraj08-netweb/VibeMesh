@@ -6,8 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const LoginForm = () => {
+
+  const [showPassword, setShowPassword] = useState (false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   const schema = yup.object().shape({
     emailId: yup
       .string()
@@ -55,12 +63,27 @@ const LoginForm = () => {
         />
         <p className="errorPara">{errors.emailId?.message}</p>
       </div>
-      <div className="formElement">
+      <div className="formElement relative">
         <Controller
           name="password"
           control={control}
           render={({ field }) => (
-            <input {...field} placeholder="Enter Password" type="password" />
+            <>
+              <input
+                {...field}
+                placeholder="Enter Password"
+                type={showPassword ? "text" : "password"}
+                id="password"
+              />
+              <span
+                className="absolute top-3 right-5 text-[#fff] cursor-pointer"
+                onClick={togglePasswordVisibility}
+              >
+                <i
+                  className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                ></i>
+              </span>
+            </>
           )}
         />
         <p className="errorPara">{errors.password?.message}</p>

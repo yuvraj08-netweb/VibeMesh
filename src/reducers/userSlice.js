@@ -1,53 +1,78 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { auth, db } from "../firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { getAuthUser } from "../utils";
 
-// Helper function to wrap onAuthStateChanged in a Promise
-const getAuthUser = () => {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        resolve(user);
-      } else {
-        reject(new Error("No user is logged in"));
-      }
-      unsubscribe(); // Clean up the listener
-    });
-  });
-};
+export const fetchUsers = createAsyncThunk(
+  "user/fetchUsers",
+  async (_, thunkAPI) => {
+    try {
+      const usersCollectionRef = collection(db, "Users");
+      const querySnapshot = await getDocs(usersCollectionRef);
+      const users = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(users);
+      
+      return users;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 export const fetchUserData = createAsyncThunk(
   "user/fetchUserData",
-  async ( thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const user = await getAuthUser(); // Wait for user authentication
-      const docSnap = await getDoc(doc(db, "Users", user.uid)); // Fetch user data
+      const user = await getAuthUser();
+      const docSnap = await getDoc(doc(db, "Users", user.uid));
       if (docSnap.exists()) {
-        console.log(docSnap.data());
-        
         return docSnap.data();
       } else {
         toast.error("User data not found!");
         return thunkAPI.rejectWithValue("User data not found");
       }
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message); // Handle errors properly
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addUserFriends = createAsyncThunk(
+  "user/addUserFriends",
+  async ({userDetails,user},thunkAPI) => {
+    try {
+      // Reference to the user document in Firestore
+      const userDocRef = doc(db, "Users", userDetails.id); // Assuming `userDetails.id` contains the Firestore document ID for the user
+  
+      // Update the friends array using arrayUnion
+      await updateDoc(userDocRef, {
+        friends: arrayUnion(user), // `user` is the friend you want to add
+      });
+  
+      console.log("Friend added successfully!");
+  
+    } catch (error) {
+      console.error("Error adding friend: ", error.message);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
 export const logOutUser = createAsyncThunk(
-    "user/logOutUser",
-    async (thunkAPI)=>{
-        try {
-            auth.signOut();
-            toast.success("User Logged Out Successfully.");
-        } catch (error) {
-            toast.error("Log Out Failed");
-            return thunkAPI.rejectWithValue(error.message); // Handle errors properly
-        }
+  "user/logOutUser",
+  async (_, thunkAPI) => {
+    try {
+      auth.signOut();
+      toast.success("User Logged Out Successfully.");
+    } catch (error) {
+      toast.error("Log Out Failed");
+      return thunkAPI.rejectWithValue(error.message);
     }
+  }
 );
 
 const userSlice = createSlice({
@@ -56,12 +81,19 @@ const userSlice = createSlice({
     loading: false,
     isUser: false,
     userDetails: null,
+    selectedChat: null,
+    allUsers: null,
+    userLoading:false,
   },
-  reducers: {},
+  reducers: {
+    setSelectedChat: (state, action) => {
+      state.selectedChat = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserData.pending, (state) => {
-        state.loading = true; 
+        state.loading = true;
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.loading = false;
@@ -75,12 +107,25 @@ const userSlice = createSlice({
       })
       .addCase(logOutUser.fulfilled, (state) => {
         state.isUser = false;
-        state.userDetails = null; // Clear user details on logout
+        state.userDetails = null;
       })
-      .addCase(logOutUser.rejected, (state, action) => {
-        console.error(action.payload); // Handle error if logout fails
-      });
+      .addCase(logOutUser.rejected, (action) => {
+        console.error(action.payload);
+      })
+      .addCase(fetchUsers.pending, (state) => {
+        state.userLoading = true;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.allUsers = action.payload;
+        state.userLoading = false;
+      })
+      .addCase(fetchUsers.rejected, (state) => {
+        state.allUsers = null;
+        state.userLoading = false;
+      })
   },
 });
+
+export const { setSelectedChat } = userSlice.actions;
 
 export default userSlice.reducer;
