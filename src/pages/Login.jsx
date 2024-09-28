@@ -32,7 +32,7 @@ useEffect(() => {
               </p>
               <Button 
                 btnText={"SignUp"}
-                path={"/signup"}
+                path="/signup"
                 className="mt-8 hover:bg-lightPurple hover:text-darkPurple "
               />
             </div>

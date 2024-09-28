@@ -2,11 +2,14 @@
 
 import { useSelector } from "react-redux";
 import UserCard from "./UserCard";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+// import { doc, getDoc } from "firebase/firestore";
+// import { db } from "../../firebase/config";
 
 const Modal = ({ open, onClose }) => {
   const { allUsers, userDetails } = useSelector((state) => state.user);
   const userFiltered = allUsers?.filter((user) => userDetails.id !== user.id);
+  // const [currentUserChats, setCurrentUserChats] = useState();
 
   // let friendFiltered =
   //   userDetails.friends.length > 0
@@ -21,6 +24,7 @@ const Modal = ({ open, onClose }) => {
 
   const modalRef = useRef(null);
 
+  
   // Handle clicking outside of the modal
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -37,6 +41,12 @@ const Modal = ({ open, onClose }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open, onClose]);
+
+  // useEffect(async () => {
+  //   const res = await getDoc(doc(db, "UsersChat", userDetails.id));
+  //   setCurrentUserChats(res.data());
+  // },[currentUserChats])
+  // console.log(currentUserChats, "currentUserChats");
 
   return (
     <>
@@ -70,8 +80,8 @@ const Modal = ({ open, onClose }) => {
                         {userFiltered.length < 1
                           ? "No users found"
                           : userFiltered.map((user, index) => (
-                              <UserCard func={onClose} user={user} key={index} />
-                            ))}
+                            <UserCard func={onClose} user={user} key={index} />
+                          ))}
                       </li>
                     </ul>
                   </div>

@@ -16,7 +16,7 @@ export const fetchUsers = createAsyncThunk(
         ...doc.data(),
       }));
       console.log(users);
-      
+
       return users;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -44,45 +44,44 @@ export const fetchUserData = createAsyncThunk(
 
 export const addUserFriends = createAsyncThunk(
   "user/addUserFriends",
-  async ({userDetails,user},thunkAPI) => {
+  async ({ userDetails, user }, thunkAPI) => {
     try {
       // Reference to the user document in Firestore
-      const userChatsRef = collection(db,"UsersChat");
-      const chatsRef = collection(db,"chats");
-      
+      const userChatsRef = collection(db, "UsersChat");
+      const chatsRef = collection(db, "chats");
+
       const newChatDocRef = doc(chatsRef);
-      
-      await setDoc(newChatDocRef,{
+
+      await setDoc(newChatDocRef, {
         createdAt: serverTimestamp(),
-        messages:[],
+        messages: [],
       })
 
-
       // Update the friends array using arrayUnion
-      await updateDoc(doc(userChatsRef,userDetails.id),{
+      await updateDoc(doc(userChatsRef, userDetails.id), {
         chats: arrayUnion({
           chatId: newChatDocRef.id,
-          lastMessage:"",
+          lastMessage: "",
           updatedAt: Date.now(),
           senderId: userDetails.id,
           receiverId: user.id,
         }), // `user` is the friend you want to add
       });
-      
+
       // Update the friends array using arrayUnion
-      await updateDoc(doc(userChatsRef,user.id),{
+      await updateDoc(doc(userChatsRef, user.id), {
         chats: arrayUnion({
           chatId: newChatDocRef.id,
-          lastMessage:"",
+          lastMessage: "",
           updatedAt: Date.now(),
           senderId: user.id,
           receiverId: userDetails.id,
         }), // `user` is the friend you want to add
       });
-  
+
       console.log("Friend added successfully!");
-      return {user};
-  
+      return { user};
+
     } catch (error) {
       console.error("Error adding friend: ", error.message);
       return thunkAPI.rejectWithValue(error.message);
@@ -111,8 +110,9 @@ const userSlice = createSlice({
     userDetails: null,
     selectedChat: null,
     allUsers: null,
-    userLoading:false,
-    chatMessages:[],
+    userLoading: false,
+    chatMessages: [],
+    userChats: [],
   },
   reducers: {
     setSelectedChat: (state, action) => {
@@ -156,6 +156,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setSelectedChat} = userSlice.actions;
+export const { setSelectedChat } = userSlice.actions;
 
 export default userSlice.reducer;

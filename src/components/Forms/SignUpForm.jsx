@@ -39,10 +39,7 @@ const SignUpForm = () => {
       .min(8, "Password must be at least 8 characters!")
       .matches(/[a-z]/, "At least one lowercase character!")
       .matches(/[A-Z]/, "At least one uppercase character!")
-      .matches(
-        /[a-zA-Z]+[^a-zA-Z\s]+/,
-        "At least 1 number or special character (@, !, #, etc)!."
-      )
+      .matches(/[\W_]/, "At least 1 special character (@, !, #, etc)!")
       .matches(/[0-9]/, "Must Include One Number"),
     confirmPassword: yup
       .string()

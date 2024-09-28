@@ -18,7 +18,7 @@ const SignUp = () => {
               </p>
               <Button 
                 btnText={"Login"}
-                path={"/login"}
+                path="/login"
                 className="mt-8 hover:bg-lightPurple hover:text-darkPurple "
               />
             </div>
