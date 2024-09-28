@@ -2,22 +2,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedChat } from "../../reducers/userSlice";
 import Button from "../Common/Button";
 import Message from "./Message";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/config";
+import NoMessage from "./NoMessage";
 
 const ChatSelected = () => {
   const dispatch = useDispatch();
 
   const { selectedChat } = useSelector((state) => state.user);
+ 
+  const [chat,setChat] = useState();
 
   const handleBack = () => {
     dispatch(setSelectedChat(null));
   };
 
-  useEffect(() => {}, []);
+  const endRef = useRef(null);
 
+  useEffect(() => {
+    endRef.current?.scrollIntoView({behaviour:"smooth"});
+  }, []);
+
+  useEffect(()=>{
+    const unsub = onSnapshot(doc(db,"chats","jgxYkqGGRliinc3FfZej"),(res)=>{
+      setChat(res.data())
+    })
+    
+    return () =>{
+      unsub();
+    }
+  },[])
+ 
+  console.log(chat,"chat");
+  
   return (
     <>
-      <div className="min-h-[100%]">
+      <div className="min-h-[100%]" data-aos="zoom-in-up">
         {/* Header Setion */}
         <section className=" fixed top-0 header w-[-webkit-fill-available] flex justify-between items-center border-b p-3 ">
           <div className="infoContainer flex items-center">
@@ -56,11 +77,16 @@ const ChatSelected = () => {
           <div className="messagesContainer max-h-[69vh] overflow-y-scroll p-5">
             <ul className="">
               <li className="">
-                {selectedChat.messages.map((message, index) => {
+                { 
+                chat !== undefined ?
+                chat.messages.map((message, index) => {
                   return <Message key={index} message={message} />;
-                })}
+                })
+              : <NoMessage/>
+              }
               </li>
             </ul>
+            <div ref={endRef}></div>
           </div>
         </section>
 

@@ -5,12 +5,15 @@ import { addUserFriends } from "../../reducers/userSlice";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 
-const UserCard = ({func, user }) => {
-  const { userDetails } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  useEffect(()=>{
+const UserCard = ({ func, user }) => {
 
-  },[userDetails])
+  const { userDetails } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {}, [userDetails]);
+
+  
   const handleAddFriend = () => {
     dispatch(addUserFriends({ userDetails, user }))
       .unwrap()

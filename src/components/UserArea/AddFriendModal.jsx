@@ -8,16 +8,16 @@ const Modal = ({ open, onClose }) => {
   const { allUsers, userDetails } = useSelector((state) => state.user);
   const userFiltered = allUsers?.filter((user) => userDetails.id !== user.id);
 
-  let friendFiltered =
-    userDetails.friends.length > 0
-      ? userFiltered?.filter((user) => {
-          // Create a Set of friend IDs for faster lookup
-          const friendIds = new Set(
-            userDetails.friends.map((friend) => friend.id)
-          );
-          return !friendIds.has(user.id); // Exclude users who are friends
-        })
-      : userFiltered;
+  // let friendFiltered =
+  //   userDetails.friends.length > 0
+  //     ? userFiltered?.filter((user) => {
+  //         // Create a Set of friend IDs for faster lookup
+  //         const friendIds = new Set(
+  //           userDetails.friends.map((friend) => friend.id)
+  //         );
+  //         return !friendIds.has(user.id); // Exclude users who are friends
+  //       })
+  //     : userFiltered;
 
   const modalRef = useRef(null);
 
@@ -67,9 +67,9 @@ const Modal = ({ open, onClose }) => {
                   <div className="listInnerContainer h-[250px] w-[300px] overflow-y-auto">
                     <ul>
                       <li>
-                        {friendFiltered.length < 1
+                        {userFiltered.length < 1
                           ? "No users found"
-                          : friendFiltered.map((user, index) => (
+                          : userFiltered.map((user, index) => (
                               <UserCard func={onClose} user={user} key={index} />
                             ))}
                       </li>

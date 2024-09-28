@@ -59,9 +59,6 @@ const InfoModal = ({ open, onClose }) => {
                         <h5 className="text-xl font-semibold">Full Name : </h5> <p>{userDetails.fullName} </p>
                     
                     </div>
-                    <div className="friends flex gap-5 justify-between items-center mt-5">
-                        <h5 className="text-xl font-semibold ">Friends Count : </h5> <p>{userDetails.friends.length}</p>
-                    </div>
                 </div>
                 {/*footer*/}
                 {/* <div className="flex items-center justify-end p-6 border-t border-solid border-[#c3c3c3] rounded-b">

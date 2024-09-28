@@ -42,7 +42,8 @@ const SignUpForm = () => {
       .matches(
         /[a-zA-Z]+[^a-zA-Z\s]+/,
         "At least 1 number or special character (@, !, #, etc)!."
-      ),
+      )
+      .matches(/[0-9]/, "Must Include One Number"),
     confirmPassword: yup
       .string()
       .required("Password confirmation is required!")
@@ -87,10 +88,10 @@ const SignUpForm = () => {
           fullName: data.fullName,
           email: user.email,
           avatar: imgUrl,
-          blocked: false,
-          friends: [],
-          groups: [],
-          messages: [],
+          blocked: [],
+        });
+        await setDoc(doc(db, "UsersChat", user.uid), {
+          chats: [],
         });
       }
 
@@ -106,7 +107,7 @@ const SignUpForm = () => {
   const handleFileChange = (file) => {
     setImg(file);
   };
-  
+
   return (
     <form className="md:max-w-[450px] w-[90%] loginForm">
       <div className="formElement">

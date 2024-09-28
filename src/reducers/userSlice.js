@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { auth, db } from "../firebase/config";
-import { arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { getAuthUser } from "../utils";
+
 
 export const fetchUsers = createAsyncThunk(
   "user/fetchUsers",
@@ -46,14 +47,41 @@ export const addUserFriends = createAsyncThunk(
   async ({userDetails,user},thunkAPI) => {
     try {
       // Reference to the user document in Firestore
-      const userDocRef = doc(db, "Users", userDetails.id); // Assuming `userDetails.id` contains the Firestore document ID for the user
-  
+      const userChatsRef = collection(db,"UsersChat");
+      const chatsRef = collection(db,"chats");
+      
+      const newChatDocRef = doc(chatsRef);
+      
+      await setDoc(newChatDocRef,{
+        createdAt: serverTimestamp(),
+        messages:[],
+      })
+
+
       // Update the friends array using arrayUnion
-      await updateDoc(userDocRef, {
-        friends: arrayUnion(user), // `user` is the friend you want to add
+      await updateDoc(doc(userChatsRef,userDetails.id),{
+        chats: arrayUnion({
+          chatId: newChatDocRef.id,
+          lastMessage:"",
+          updatedAt: Date.now(),
+          senderId: userDetails.id,
+          receiverId: user.id,
+        }), // `user` is the friend you want to add
+      });
+      
+      // Update the friends array using arrayUnion
+      await updateDoc(doc(userChatsRef,user.id),{
+        chats: arrayUnion({
+          chatId: newChatDocRef.id,
+          lastMessage:"",
+          updatedAt: Date.now(),
+          senderId: user.id,
+          receiverId: userDetails.id,
+        }), // `user` is the friend you want to add
       });
   
       console.log("Friend added successfully!");
+      return {user};
   
     } catch (error) {
       console.error("Error adding friend: ", error.message);
@@ -84,6 +112,7 @@ const userSlice = createSlice({
     selectedChat: null,
     allUsers: null,
     userLoading:false,
+    chatMessages:[],
   },
   reducers: {
     setSelectedChat: (state, action) => {
@@ -108,6 +137,7 @@ const userSlice = createSlice({
       .addCase(logOutUser.fulfilled, (state) => {
         state.isUser = false;
         state.userDetails = null;
+        state.selectedChat = null;
       })
       .addCase(logOutUser.rejected, (action) => {
         console.error(action.payload);
@@ -126,6 +156,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setSelectedChat } = userSlice.actions;
+export const { setSelectedChat} = userSlice.actions;
 
 export default userSlice.reducer;

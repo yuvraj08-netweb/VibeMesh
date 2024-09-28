@@ -1,82 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FriendsCard from "./FriendsCard";
 import GroupCard from "./GroupCard";
 import { useSelector } from "react-redux";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/config";
 
 const Tabs = () => {
   const [openTab, setOpenTab] = useState("chat");
   const {userDetails} = useSelector(state=>state.user)
+  const[chats,setChats] = useState([])
+
+useEffect(()=>{
+  const unSub = onSnapshot(doc(db,"UsersChat",userDetails.id),async (res)=>{
+    const items = res.data().chats;
+
+    const promises = items.map(async (item)=>{
+      const userDocRef = doc(db,"Users",item.receiverId);
+      const userDocSnap = await getDoc(userDocRef);
+
+      const user = userDocSnap.data();
+
+      return {...item, user};
+    })
+
+    const chatData = await Promise.all(promises)
+
+    setChats(chatData.sort((a,b)=> b.updatedAt - a.updatedAt));
+    
+  });
+
+  return()=>{
+    unSub()
+  }
+},[userDetails.id]);
+
+console.log(chats);
+
 
   const switchTab = (tab) => {
     setOpenTab(tab);
   };
-
-  // const Friends = [
-  //   {
-  //     fullName: "Yuvraj Singh",
-  //     avatar:imgUrl,
-  //     messages: [
-  //       {
-  //         text: `How can we help?
-  // You can ask questions like:
-  // Whats Preline UI?
-  // How many Starter Pages & Examples are there?
-  // Is there a PRO version?`,
-  //         sent: true,
-  //         sender: "user",
-  //       },
-  //       {
-  //         text: `I want to build a chat system and automatically scroll to the bottom when entering the window and when new messages come in.`,
-  //         sent: true,
-  //         sender: "friend",
-  //       },
-  //       {
-  //         text: `How can we help?
-  // You can ask questions like:
-  // Whats Preline UI?
-  // How many Starter Pages & Examples are there?
-  // Is there a PRO version?`,
-  //         sent: true,
-  //         sender: "user",
-  //       },
-  //       {
-  //         text: `I want to build a chat system and automatically scroll to the bottom when entering the window and when new messages come in.`,
-  //         sent: false,
-  //         sender: "friend",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     fullName: "Lakshay",
-  //     avatar: imgUrl,
-  //     messages: [
-  //       {
-  //         text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five`,
-  //         sent: false,
-  //         sender: "user",
-  //       },
-  //       {
-  //         text: `I want to build a chat system and automatically scroll to the bottom when entering the window and when new messages come in.`,
-  //         sent: true,
-  //         sender: "friend",
-  //       },
-  //       {
-  //         text: `How can we help?
-  // You can ask questions like:
-  // Whats Preline UI?
-  // How many Starter Pages & Examples are there?
-  // Is there a PRO version?`,
-  //         sent: true,
-  //         sender: "user",
-  //       },
-  //       {
-  //         text: `I want to build a chat system and automatically scroll to the bottom when entering the window and when new messages come in.`,
-  //         sent: true,
-  //         sender: "friend",
-  //       },
-  //     ],
-  //   },
-  // ];
 
   return (
     <>
@@ -137,19 +100,21 @@ const Tabs = () => {
                   {/* display all available chats */}
                   <div className="friendsCol">
                     {
-                      // eslint-disable-next-line no-constant-condition
-                      true ? (
-                        userDetails.friends.map((friend,idx)=>{
+                      chats.length>0 ?
+                      
+                      chats.map((chat)=>{
+                          console.log(chat,"IN TABS FRIEND");
+                          
                           return (
                             <FriendsCard 
-                            friend = {friend}
-                            key={idx}
+                            friend = {chat.user}
+                            key={chat.chatId}
                           />
                           )
                         })
                       
-                      ) : (
-                        <p>No Friends To Show</p>
+                       : (
+                        <p className="text-[#fff]">No Friends To Show</p>
                       )
                     }
                   </div>

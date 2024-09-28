@@ -3,9 +3,9 @@ import { setSelectedChat } from "../../reducers/userSlice";
 
 /* eslint-disable react/prop-types */
 const FriendsCard = ({friend}) => {
-  // console.log(friend);
+  console.log(friend);
   const dispatch = useDispatch();
-  const lastMessage = friend.messages.length>0 ? friend.messages[friend.messages.length-1].text : "";
+  // const lastMessage = friend.messages.length>0 ? friend.messages[friend.messages.length-1].text : "";
   return (
     <>
       <div
@@ -24,7 +24,7 @@ const FriendsCard = ({friend}) => {
             <h4 className="text-xl font-normal">{friend.fullName}</h4>
           </div>
           <div className="lastMessage text-xs text-[#ffffff81]">
-            <p>{lastMessage}</p>
+            {/* <p>{lastMessage}</p> */}
           </div>
         </div>
       </div>

@@ -29,6 +29,10 @@ const UserArea = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
+  useEffect(()=>{
+    !userDetails ? navigate("/login") : ""
+  })
+
   if (loading) {
     return <PageLoader />;
   }
