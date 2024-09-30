@@ -10,25 +10,30 @@ import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./pages/NotFound";
 import { useDispatch } from "react-redux";
 import { fetchUserData } from "./reducers/userSlice";
+import PrivateLayout from "./layouts/PrivateLayout";
+import PublicLayout from "./layouts/PublicLayout";
 
 function App() {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     initializeAOS();
     dispatch(fetchUserData());
   },[dispatch]);
-
 
   return (
     <div className="font-serif">
       <ToastContainer position="bottom-right" theme="dark" autoClose={3000} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/userArea" element={<UserArea />} />
-        <Route path="*" element={<NotFound/>} />
+        <Route element={<PublicLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
+        <Route element={<PrivateLayout />}>
+          <Route path="/userArea" element={<UserArea />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

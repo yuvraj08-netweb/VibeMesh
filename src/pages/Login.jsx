@@ -1,21 +1,8 @@
-import { useSelector } from "react-redux";
 import Button from "../components/Common/Button";
 import LoginForm from "../components/Forms/LoginForm";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const Login = () => {
-  const navigate = useNavigate();
-// Accessing isUser from the state
-const { isUser } = useSelector((state) => state.user);
 
-useEffect(() => {
-  // Redirect if user is already logged in
-  if (isUser) {
-    navigate('/userArea'); // Change to your user area path
-  }
-},[isUser,navigate]);
-  
   return (
     <>
       <div className="Login w-full min-h-screen flex justify-center items-center ">

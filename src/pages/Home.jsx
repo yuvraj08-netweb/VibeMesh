@@ -86,7 +86,7 @@ const Home = () => {
             <Button
               btnText={
                 <>
-                  <i class="fa-solid fa-bars"></i>
+                  <i className="fa-solid fa-bars"></i>
                 </>
               }
               className="!text-[#fff]"

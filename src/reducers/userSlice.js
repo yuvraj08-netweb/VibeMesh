@@ -15,7 +15,7 @@ export const fetchUsers = createAsyncThunk(
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(users);
+      // console.log(users);
 
       return users;
     } catch (error) {
@@ -27,6 +27,8 @@ export const fetchUsers = createAsyncThunk(
 export const fetchUserData = createAsyncThunk(
   "user/fetchUserData",
   async (_, thunkAPI) => {
+    console.log("fetched");
+    
     try {
       const user = await getAuthUser();
       const docSnap = await getDoc(doc(db, "Users", user.uid));
@@ -78,7 +80,7 @@ export const addUserFriends = createAsyncThunk(
           receiverId: userDetails.id,
         }), // `user` is the friend you want to add
       });
-
+      
       console.log("Friend added successfully!");
       return { user};
 
@@ -105,7 +107,7 @@ export const logOutUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    loading: false,
+    loading: null,
     isUser: false,
     userDetails: null,
     selectedChat: null,
@@ -118,6 +120,9 @@ const userSlice = createSlice({
     setSelectedChat: (state, action) => {
       state.selectedChat = action.payload;
     },
+    setUserChats: (state, action) =>{
+      state.userChats = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -156,6 +161,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setSelectedChat } = userSlice.actions;
+export const { setSelectedChat, setUserChats } = userSlice.actions;
 
 export default userSlice.reducer;

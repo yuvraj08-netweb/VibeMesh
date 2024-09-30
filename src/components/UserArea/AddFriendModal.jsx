@@ -2,25 +2,30 @@
 
 import { useSelector } from "react-redux";
 import UserCard from "./UserCard";
-import { useEffect, useRef, useState } from "react";
-// import { doc, getDoc } from "firebase/firestore";
-// import { db } from "../../firebase/config";
+import { useEffect, useRef } from "react";
 
 const Modal = ({ open, onClose }) => {
-  const { allUsers, userDetails } = useSelector((state) => state.user);
-  const userFiltered = allUsers?.filter((user) => userDetails.id !== user.id);
-  // const [currentUserChats, setCurrentUserChats] = useState();
+  const { allUsers, userDetails,userChats } = useSelector((state) => state.user);
 
-  // let friendFiltered =
-  //   userDetails.friends.length > 0
-  //     ? userFiltered?.filter((user) => {
-  //         // Create a Set of friend IDs for faster lookup
-  //         const friendIds = new Set(
-  //           userDetails.friends.map((friend) => friend.id)
-  //         );
-  //         return !friendIds.has(user.id); // Exclude users who are friends
-  //       })
-  //     : userFiltered;
+  const userFiltered = allUsers?.filter((user) => userDetails.id !== user.id);
+
+  // console.log(userChats,"userChats");
+  
+  // console.log(  userChats.length,"  userChats.length");
+  
+  let friendFiltered =
+  userChats.length > 0
+      ? userFiltered?.filter((user) => {
+          // Create a Set of friend IDs for faster lookup
+          const friendIds = new Set(
+            userChats.map((friend) => friend.user.id)
+          );
+//           console.log(friendIds,"friendIds");
+// console.log(!friendIds.has(user.id),"!friendIds.has(user.id)");
+
+          return !friendIds.has(user.id); // Exclude users who are friends
+        })
+      : userFiltered;
 
   const modalRef = useRef(null);
 
@@ -77,9 +82,9 @@ const Modal = ({ open, onClose }) => {
                   <div className="listInnerContainer h-[250px] w-[300px] overflow-y-auto">
                     <ul>
                       <li>
-                        {userFiltered.length < 1
+                        {friendFiltered.length < 1
                           ? "No users found"
-                          : userFiltered.map((user, index) => (
+                          : friendFiltered.map((user, index) => (
                             <UserCard func={onClose} user={user} key={index} />
                           ))}
                       </li>

@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import FriendsCard from "./FriendsCard";
 import GroupCard from "./GroupCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/config";
+import { setUserChats } from "../../reducers/userSlice";
 
 const Tabs = () => {
   const [openTab, setOpenTab] = useState("chat");
   const {userDetails} = useSelector(state=>state.user)
   const[chats,setChats] = useState([])
+
+  const dispatch = useDispatch();
 
 useEffect(()=>{
   const unSub = onSnapshot(doc(db,"UsersChat",userDetails.id),async (res)=>{
@@ -24,18 +27,19 @@ useEffect(()=>{
     })
 
     const chatData = await Promise.all(promises)
-
-    setChats(chatData.sort((a,b)=> b.updatedAt - a.updatedAt));
+    // console.log("chatData",chatData);
     
+    dispatch(setUserChats(chatData));
+
+    // setChats(chatData.sort((a,b)=> b.updatedAt - a.updatedAt));
+    setChats(chatData)
   });
 
   return()=>{
     unSub()
   }
+// eslint-disable-next-line react-hooks/exhaustive-deps
 },[userDetails.id]);
-
-console.log(chats);
-
 
   const switchTab = (tab) => {
     setOpenTab(tab);
@@ -103,11 +107,10 @@ console.log(chats);
                       chats.length>0 ?
                       
                       chats.map((chat)=>{
-                          console.log(chat,"IN TABS FRIEND");
                           
                           return (
                             <FriendsCard 
-                            friend = {chat.user}
+                            friend = {chat}
                             key={chat.chatId}
                           />
                           )

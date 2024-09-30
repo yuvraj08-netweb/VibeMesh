@@ -16,12 +16,12 @@
 
 ::-webkit-scrollbar-track {
   /* Customize the scrollbar track */
-  background-color: #070F2B;
+  background-color: #070f2b;
 }
 
 ::-webkit-scrollbar-thumb {
   /* Customize the scrollbar thumb */
-  background: #535C91;
+  background: #535c91;
 }
 
 input,
@@ -275,11 +275,12 @@ textarea {
   animation-delay: -10s;
 }
 
-
-.lastMessage{
+.lastMessage {
   max-width: 200px;
-  white-space:nowrap;
-  overflow:hidden;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-
+/* .messagesContainer {
+  scroll-behavior: smooth;
+} */

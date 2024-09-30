@@ -7,10 +7,11 @@ import { auth } from "../../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchUserData } from "../../reducers/userSlice";
 
 const LoginForm = () => {
-
-  const [showPassword, setShowPassword] = useState (false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -42,12 +43,16 @@ const LoginForm = () => {
   });
 
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const submitForm = async (data) => {
     try {
-      await signInWithEmailAndPassword(auth, data.emailId, data.password);
-      reset();
-      navigate(`/userArea`);
+      await signInWithEmailAndPassword(auth, data.emailId, data.password).then(
+        () => {
+          dispatch(fetchUserData());
+          reset();
+          navigate("/userArea");
+        }
+      );
     } catch (error) {
       toast.error(`Log In Failed Due To : ${error.message}`);
     }
