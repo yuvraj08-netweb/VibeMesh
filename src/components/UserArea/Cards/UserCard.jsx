@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
-import Button from "../Common/Button";
-import { addUserFriends } from "../../reducers/userSlice";
+import Button from "../../Common/Button";
+import { addUserFriends } from "../../../reducers/userSlice";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 

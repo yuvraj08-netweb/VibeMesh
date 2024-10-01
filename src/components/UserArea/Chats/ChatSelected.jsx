@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedChat } from "../../reducers/userSlice";
-import Button from "../Common/Button";
-import Message from "./Message";
+import { setSelectedChat } from "../../../reducers/userSlice";
+import Button from "../../Common/Button";
+import Message from "../Messages/Message";
 import { useEffect, useRef, useState } from "react";
 import {
   arrayUnion,
@@ -11,8 +11,8 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../firebase/config";
-import NoMessage from "./NoMessage";
+import { db } from "../../../firebase/config";
+import NoMessage from "../Messages/NoMessage";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";

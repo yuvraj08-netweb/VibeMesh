@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import FriendsCard from "./FriendsCard";
-import GroupCard from "./GroupCard";
+import FriendsCard from "./Cards/FriendsCard";
+import GroupCard from "./Cards/GroupCard";
 import { useDispatch, useSelector } from "react-redux";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/config";

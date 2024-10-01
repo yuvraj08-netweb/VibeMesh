@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
-import { setSelectedChat } from "../../reducers/userSlice";
+import { setSelectedChat } from "../../../reducers/userSlice";
 
 /* eslint-disable react/prop-types */
 const FriendsCard = ({friend}) => {
   const friendData = friend.user;
   const dispatch = useDispatch();
-  // const lastMessage = friend.messages.length>0 ? friend.messages[friend.messages.length-1].text : "";
+
   return (
     <>
       <div

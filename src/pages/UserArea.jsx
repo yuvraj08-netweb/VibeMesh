@@ -1,14 +1,14 @@
 import Button from "../components/Common/Button";
 import { useNavigate } from "react-router-dom";
-import NoChatSelected from "../components/UserArea/NoChatSelected";
+import NoChatSelected from "../components/UserArea/Chats/NoChatSelected";
 import Tabs from "../components/UserArea/Tabs";
 import PageLoader from "../components/Common/PageLoader";
 import { useDispatch, useSelector } from "react-redux";
 import {fetchUsers, logOutUser } from "../reducers/userSlice";
-import ChatSelected from "../components/UserArea/ChatSelected";
+import ChatSelected from "../components/UserArea/Chats/ChatSelected";
 import { useEffect, useState } from "react";
-import Modal from "../components/UserArea/AddFriendModal";
-import InfoModal from "../components/UserArea/UserInfoModal";
+import Modal from "../components/UserArea/Modals/AddFriendModal";
+import InfoModal from "../components/UserArea/Modals/UserInfoModal";
 
 const UserArea = () => {
   const { userDetails, loading, selectedChat } = useSelector(

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { useSelector } from "react-redux";
-import UserCard from "./UserCard";
+import UserCard from "../Cards/UserCard";
 import { useEffect, useRef } from "react";
 
 const Modal = ({ open, onClose }) => {

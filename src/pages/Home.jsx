@@ -23,7 +23,7 @@ const Home = () => {
           <div className="navLeft">
             <div className="brandLogo max-w-[200px]">
               <img
-                src="../../src/assets/logo(s)/VibeMesh-Light.png"
+                src="../../public/assets/logo(s)/VibeMesh-Light.png"
                 alt="brandLogo"
                 className="w-full"
               />
@@ -203,7 +203,7 @@ const Home = () => {
             data-aos="fade-left"
           >
             <div className="heroImgContainer">
-              <img src="../../src/assets/svg/landing.svg" alt="illustration" />
+              <img src="../../public/assets/svg/landing.svg" alt="illustration" />
             </div>
           </div>
         </div>
@@ -217,7 +217,7 @@ const Home = () => {
           <div className="aboutLeft md:w-[50%]">
             <div className="aboutImage w-[80%] m-auto" data-aos="flip-up">
               <img
-                src="../../src/assets/svg/about.svg"
+                src="../../public/assets/svg/about.svg"
                 alt="illustration"
                 className="w-full"
               />
@@ -268,7 +268,7 @@ const Home = () => {
           <div className="contactRight  w-1/2 md:block hidden">
             <div className="contactImg w-[80%] mx-auto">
               <img
-                src="../../src/assets/svg/contact.svg"
+                src="../../public/assets/svg/contact.svg"
                 alt="illustration"
                 className="w-full"
               />
@@ -282,7 +282,7 @@ const Home = () => {
           <div className="footerLeftOne">
             <div className="footerImg max-w-[300px] mx-auto">
               <img
-                src="../../src/assets/logo(s)/VibeMesh-Light.png"
+                src="../../public/assets/logo(s)/VibeMesh-Light.png"
                 alt="brandLogo"
                 className="w-full"
               />
