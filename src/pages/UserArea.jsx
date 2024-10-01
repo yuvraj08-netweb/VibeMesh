@@ -47,8 +47,8 @@ const UserArea = () => {
     <div>
       {userDetails ? (
         <>
-          <div className="userArea min-h-screen w-full flex items-center text-[#fff]">
-            <div className="centerCard min-h-[90vh] w-[90%] m-auto">
+          <div className="userArea  sm:min-h-screen min-h-[90vh] w-full flex items-center text-[#fff]">
+            <div className="centerCard sm:min-h-[90vh] min-h-[80vh] w-[90%] m-auto">
               <div className="innerContainer flex min-h-[inherit]">
                 {/* Left Side Area */}
                 <div
@@ -68,7 +68,7 @@ const UserArea = () => {
                           className="w-[50px] h-[50px]  rounded-[100%] border"
                         />
                       </div>
-                      <div className="userName ml-3 text-lg max-w-[60%]">
+                      <div className="userName ml-3 text-lg max-w-max">
                         <h2>{userDetails.fullName}</h2>
                       </div>
                     </div>
@@ -78,7 +78,7 @@ const UserArea = () => {
                           btnText={
                             <>
                               <span className="tooltip  text-xs rounded shadow-lg p-2 !bg-[#ffffff9a] text-[black] mt-6 -ml-20">
-                                Add Friends
+                                Create Chat
                               </span>
                               <i className="fa-solid fa-plus"></i>
                             </>

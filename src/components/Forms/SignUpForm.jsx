@@ -8,7 +8,7 @@ import { auth, db } from "../../firebase/config";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import upload from "../../firebase/upload";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -89,6 +89,7 @@ const SignUpForm = () => {
         });
         await setDoc(doc(db, "UsersChat", user.uid), {
           chats: [],
+          groups:[],
         });
       }
 
@@ -182,7 +183,9 @@ const SignUpForm = () => {
         />
         <p className="errorPara">{errors.confirmPassword?.message}</p>
       </div>
-      <div className="formElement">
+      <p className="text-[#949393d7] mb-4 sm:hidden block">Already have a account ? <Link to="/login"><span className="text-lightPurple font-bold"> Login Here </span></Link> </p>
+
+      <div className="formElement max-w-[100px]">
         {loading ? (
           <div className="loading-wave">
             <div className="loading-bar" />
@@ -193,7 +196,7 @@ const SignUpForm = () => {
         ) : (
           <Button
             btnText={"Register"}
-            className="!text-darkPurple bg-lightPurple border-none"
+            className="!text-[#fffefe] bg-lightPurple border-none"
             btnFun={handleSubmit(submitForm)}
           />
         )}

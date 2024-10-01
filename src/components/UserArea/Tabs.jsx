@@ -10,41 +10,55 @@ const Tabs = () => {
   const [openTab, setOpenTab] = useState("chat");
   const {userDetails} = useSelector(state=>state.user)
   const[chats,setChats] = useState([])
-
+  const [groups,setGroups] = useState([])
   const dispatch = useDispatch();
 
-useEffect(()=>{
-  const unSub = onSnapshot(doc(db,"UsersChat",userDetails.id),async (res)=>{
-    const items = res.data().chats;
-
-    const promises = items.map(async (item)=>{
-      const userDocRef = doc(db,"Users",item.receiverId);
-      const userDocSnap = await getDoc(userDocRef);
-
-      const user = userDocSnap.data();
-
-      return {...item, user};
-    })
-
-    const chatData = await Promise.all(promises)
-    // console.log("chatData",chatData);
-    
-    dispatch(setUserChats(chatData));
-
-    // setChats(chatData.sort((a,b)=> b.updatedAt - a.updatedAt));
-    setChats(chatData)
-  });
-
-  return()=>{
-    unSub()
-  }
-// eslint-disable-next-line react-hooks/exhaustive-deps
-},[userDetails.id]);
+  useEffect(() => {
+    const unSub = onSnapshot(doc(db, "UsersChat", userDetails.id), async (res) => {
+      const { chats = [], groups = [] } = res.data() || {};
+  
+      // Fetching user data for chats
+      const chatPromises = chats.map(async (item) => {
+        const userDocRef = doc(db, "Users", item.receiverId);
+        const userDocSnap = await getDoc(userDocRef);
+        const user = userDocSnap.data();
+        return { ...item, user };
+      });
+  
+      // Fetching user data for groups (if necessary)
+      const groupPromises = groups.map(async (group) => {
+        const groupDocRef = doc(db, "Groups", group.groupId); // Assuming you have a "Groups" collection
+        const groupDocSnap = await getDoc(groupDocRef);
+        const groupData = groupDocSnap.data();
+  
+        return { ...group, groupData };
+      });
+  
+      // Resolve all promises
+      const chatData = await Promise.all(chatPromises);
+      const groupData = await Promise.all(groupPromises);
+  
+      // Dispatch user chats and groups separately, or merge as needed
+      dispatch(setUserChats(chatData));
+  
+      // Optionally sort and set the combined data by updatedAt
+      setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+      setGroups(groupData);
+    });
+  
+    return () => {
+      unSub();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userDetails.id]);
+  
 
   const switchTab = (tab) => {
     setOpenTab(tab);
   };
 
+  console.log(groups);
+  
   return (
     <>
       <div className="flex flex-wrap">
@@ -127,17 +141,23 @@ useEffect(()=>{
                   className={openTab === "group" ? "block" : "hidden"}
                   id="groupChat"
                 >
-                  {
-                    // eslint-disable-next-line no-constant-condition
-                    true ? (
-                      <GroupCard
-                        groupName="Friends Forever"
-                        groupAvatar="https://static.vecteezy.com/system/resources/previews/028/711/754/non_2x/diverse-group-of-people-chat-with-a-personal-coach-small-business-ai-generated-free-png.png"
-                      />
-                    ) : (
-                      <p>No Friends To Show</p>
-                    )
-                  }
+                   {
+                      groups.length>0 ?
+                      
+                      groups.map((group,idx)=>{
+                          
+                          return (
+                              <GroupCard 
+                                groupInfo={group}
+                                key={idx}
+                              />
+                          )
+                        })
+                      
+                       : (
+                        <p className="text-[#fff]">No Groups Created Or Joined</p>
+                      )
+                    }
                 </div>
               </div>
             </div>

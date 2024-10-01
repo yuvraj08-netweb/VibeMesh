@@ -7,7 +7,6 @@ import {
   arrayUnion,
   collection,
   doc,
-  getDoc,
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
@@ -59,56 +58,57 @@ const ChatSelected = () => {
     dispatch(setSelectedChat(null));
   };
 
-  const handleLastMessage = async (message) =>{
-    try {
-      const userChatRef = doc(db, "UsersChat", selectedChat.user.id);
-      const userChatTwoRef = doc(db, "UsersChat", userDetails.id);
+//   const handleLastMessage = async (message) =>{
+//     try {
+//       const userChatRef = doc(db, "UsersChat", selectedChat.user.id);
+//       const userChatTwoRef = doc(db, "UsersChat", userDetails.id);
 
-      const newData = {lastMessage: message,updatedAt: Date.now(),}
+//       const newData = {lastMessage: message,updatedAt: Date.now(),}
   
-      const userChatSnapshot = await getDoc(userChatRef);
-      const userChatTwoSnapshot = await getDoc(userChatTwoRef);
+//       const userChatSnapshot = await getDoc(userChatRef);
+//       const userChatTwoSnapshot = await getDoc(userChatTwoRef);
       
-      console.log(userChatSnapshot,userChatTwoSnapshot,"SnapShots");
+//       console.log(userChatSnapshot,userChatTwoSnapshot,"SnapShots");
       
 
-// Deep clone to avoid accidental mutations
- // Clean up any unexpected data here
- let chatsArray = userChatSnapshot.data().chats || [];
- let chatsArrayTwo = userChatTwoSnapshot.data().chats || [];
-// If any invalid object is present, remove it
-chatsArray = chatsArray.filter(chat => chat.chatId);
-chatsArrayTwo = chatsArrayTwo.filter(chat => chat.chatId);
+// // Deep clone to avoid accidental mutations
+//  // Clean up any unexpected data here
+//  let chatsArray = userChatSnapshot.data().chats || [];
+//  let chatsArrayTwo = userChatTwoSnapshot.data().chats || [];
+// // If any invalid object is present, remove it
+// chatsArray = chatsArray.filter(chat => chat.chatId);
+// chatsArrayTwo = chatsArrayTwo.filter(chat => chat.chatId);
 
-console.log(chatsArray, chatsArrayTwo, "ChatArray ONE AND TWO");
+// console.log(chatsArray, chatsArrayTwo, "ChatArray ONE AND TWO");
       
-      const chatIndex = chatsArray.findIndex(chat=> chat.chatId === selectedChat.chatId);
-      const chatIndexTwo = chatsArrayTwo.findIndex(chat=> chat.chatId === userDetails.chatId);
+//       const chatIndex = chatsArray.findIndex(chat=> chat.chatId === selectedChat.chatId);
+//       const chatIndexTwo = chatsArrayTwo.findIndex(chat=> chat.chatId === userDetails.chatId);
   
-      console.log(chatIndex,chatIndexTwo,"ChatIndexes");
+//       console.log(chatIndex,chatIndexTwo,"ChatIndexes");
       
-      chatsArray[chatIndex] = {...chatsArray[chatIndex], ...newData};
+//       chatsArray[chatIndex] = {...chatsArray[chatIndex], ...newData};
       
-      chatsArrayTwo[chatIndexTwo] = {...chatsArrayTwo[chatIndexTwo], ...newData};
+//       chatsArrayTwo[chatIndexTwo] = {...chatsArrayTwo[chatIndexTwo], ...newData};
       
 
-      console.log(chatsArray[chatIndex],chatsArrayTwo[chatIndexTwo]);
+//       console.log(chatsArray[chatIndex],chatsArrayTwo[chatIndexTwo]);
       
-      await updateDoc(userChatRef,{
-        chats: chatsArray,
-      })
-      // await updateDoc(userChatTwoRef,{
-      //   chats: chatsArray,
-      // })
+//       await updateDoc(userChatRef,{
+//         chats: chatsArray,
+//       })
+//       // await updateDoc(userChatTwoRef,{
+//       //   chats: chatsArray,
+//       // })
   
-      console.log(message);
-    } catch (error) {
-      console.log(error);
+//       console.log(message);
+//     } catch (error) {
+//       console.log(error);
       
-    }
+//     }
    
     
-  }
+//   }
+
   const handleSend = async (data) => {
     const chatsRef = collection(db, "chats");
     const newChatDocRef = doc(chatsRef, selectedChat.chatId);
@@ -124,7 +124,7 @@ console.log(chatsArray, chatsArrayTwo, "ChatArray ONE AND TWO");
       reset();
     });
 
-    handleLastMessage(data.message)
+    // handleLastMessage(data.message)
   };
 
   useEffect(() => {
@@ -174,7 +174,7 @@ console.log(chatsArray, chatsArrayTwo, "ChatArray ONE AND TWO");
 
         {/* Chat Area */}
         <section className="chatArea py-20">
-          <div className="messagesContainer max-h-[68vh] overflow-y-scroll p-5 ">
+          <div className="messagesContainer sm:max-h-[68vh] max-h-[58vh] overflow-y-scroll p-5 ">
             <ul className="">
               <li className="">
                 {chat?.messages?.length > 0 ? (

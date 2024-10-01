@@ -1,9 +1,18 @@
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { auth, db } from "../firebase/config";
-import { arrayUnion, collection, doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { toast } from "react-toastify";
 import { getAuthUser } from "../utils";
-
 
 export const fetchUsers = createAsyncThunk(
   "user/fetchUsers",
@@ -28,7 +37,7 @@ export const fetchUserData = createAsyncThunk(
   "user/fetchUserData",
   async (_, thunkAPI) => {
     console.log("fetched");
-    
+
     try {
       const user = await getAuthUser();
       const docSnap = await getDoc(doc(db, "Users", user.uid));
@@ -57,7 +66,7 @@ export const addUserFriends = createAsyncThunk(
       await setDoc(newChatDocRef, {
         createdAt: serverTimestamp(),
         messages: [],
-      })
+      });
 
       // Update the friends array using arrayUnion
       await updateDoc(doc(userChatsRef, userDetails.id), {
@@ -80,10 +89,9 @@ export const addUserFriends = createAsyncThunk(
           receiverId: userDetails.id,
         }), // `user` is the friend you want to add
       });
-      
-      console.log("Friend added successfully!");
-      return { user};
 
+      console.log("Friend added successfully!");
+      return { user };
     } catch (error) {
       console.error("Error adding friend: ", error.message);
       return thunkAPI.rejectWithValue(error.message);
@@ -104,6 +112,59 @@ export const logOutUser = createAsyncThunk(
   }
 );
 
+export const generateGroup = createAsyncThunk(
+  "user/generateGroup",
+  async ({ groupInfo, userDetails }, thunkAPI) => {
+    try {
+      if (groupInfo) {
+        console.log(groupInfo.members);
+        const userChatsRef = collection(db, "UsersChat");
+        const groupsRef = collection(db, "groupChats");
+
+        const newGroupDocRef = doc(groupsRef);
+
+        await setDoc(newGroupDocRef, {
+          createdAt: serverTimestamp(),
+          messages: [],
+        });
+        
+        await updateDoc(doc(userChatsRef, userDetails.id), {
+          groups: arrayUnion({
+            groupId: newGroupDocRef.id,
+            groupName: groupInfo.groupName,
+            groupAvatar: groupInfo.groupAvatar,
+            lastMessage :"",
+            groupMembers: groupInfo.members,
+            createdBy : groupInfo.createdBy,
+            updatedAt: Date.now(),
+          }),
+        });
+
+        if (groupInfo.members.length > 0) {
+          groupInfo.members.map(async (member) => {
+            await updateDoc(doc(userChatsRef, member.userId), {
+              groups: arrayUnion({
+                groupId: newGroupDocRef.id,
+                groupName: groupInfo.groupName,
+                groupAvatar: groupInfo.groupAvatar,
+                lastMessage :"",
+                groupMembers: groupInfo.members,
+                createdBy: groupInfo.createdBy,
+                updatedAt: Date.now(),
+              }),
+            });
+          });
+        }
+
+      } else {
+        throw new Error("NoGroupInfoFound");
+      }
+    } catch (error) {
+      console.error("Error adding friend: ", error.message);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -113,16 +174,24 @@ const userSlice = createSlice({
     selectedChat: null,
     allUsers: null,
     userLoading: false,
-    chatMessages: [],
+    groupMembers: [],
     userChats: [],
   },
   reducers: {
     setSelectedChat: (state, action) => {
       state.selectedChat = action.payload;
     },
-    setUserChats: (state, action) =>{
+    setUserChats: (state, action) => {
       state.userChats = action.payload;
-    }
+    },
+    addGroupMembers: (state, action) => {
+      state.groupMembers = [...state.groupMembers, action.payload];
+    },
+    deleteGroupMember: (state, action) => {
+      state.groupMembers = state.groupMembers.filter((member) => {
+        return member?.userId !== action.payload;
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -157,10 +226,15 @@ const userSlice = createSlice({
       .addCase(fetchUsers.rejected, (state) => {
         state.allUsers = null;
         state.userLoading = false;
-      })
+      });
   },
 });
 
-export const { setSelectedChat, setUserChats } = userSlice.actions;
+export const {
+  setSelectedChat,
+  setUserChats,
+  addGroupMembers,
+  deleteGroupMember,
+} = userSlice.actions;
 
 export default userSlice.reducer;

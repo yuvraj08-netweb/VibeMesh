@@ -1,27 +1,31 @@
 /* eslint-disable react/prop-types */
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserCard from "../Cards/UserCard";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import GroupCard from "../Cards/GroupCard";
+import Button from "../../Common/Button";
+import Upload from "../../../firebase/upload";
+import { generateGroup } from "../../../reducers/userSlice";
+import { toast } from "react-toastify";
 
 const Modal = ({ open, onClose }) => {
-  const { allUsers, userDetails,userChats } = useSelector((state) => state.user);
-
+  const [createGroup, setCreateGroup] = useState(false);
+  const [gName, setGName] = useState("NoName");
+  const [img, setImg] = useState();
+  const { allUsers, userDetails, userChats, groupMembers } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
   const userFiltered = allUsers?.filter((user) => userDetails.id !== user.id);
 
-  // console.log(userChats,"userChats");
-  
-  // console.log(  userChats.length,"  userChats.length");
-  
   let friendFiltered =
-  userChats.length > 0
+    userChats.length > 0
       ? userFiltered?.filter((user) => {
           // Create a Set of friend IDs for faster lookup
-          const friendIds = new Set(
-            userChats.map((friend) => friend.user.id)
-          );
-//           console.log(friendIds,"friendIds");
-// console.log(!friendIds.has(user.id),"!friendIds.has(user.id)");
+          const friendIds = new Set(userChats.map((friend) => friend.user.id));
+          //           console.log(friendIds,"friendIds");
+          // console.log(!friendIds.has(user.id),"!friendIds.has(user.id)");
 
           return !friendIds.has(user.id); // Exclude users who are friends
         })
@@ -29,12 +33,12 @@ const Modal = ({ open, onClose }) => {
 
   const modalRef = useRef(null);
 
-  
   // Handle clicking outside of the modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         onClose();
+        setCreateGroup(false);
       }
     };
 
@@ -52,7 +56,51 @@ const Modal = ({ open, onClose }) => {
   //   setCurrentUserChats(res.data());
   // },[currentUserChats])
   // console.log(currentUserChats, "currentUserChats");
+  const [openTab, setOpenTab] = useState("chat");
 
+  const switchTab = (tab) => {
+    setOpenTab(tab);
+  };
+
+  const handleCreateGroup = async () => {
+    const userPersonalData = {
+      id: userDetails.id,
+      name: userDetails.fullName,
+      avatar: userDetails.avatar,
+    }
+    
+    // Add current user to group members locally
+  const updatedGroupMembers = [userPersonalData, ...groupMembers];
+    
+    const imgUrl =
+      (await Upload(img)) ||
+      "https://smaabacus.com/themes/user/assets_old/img/dd/avatar/male.png";
+
+    const groupInfo = {
+      groupName: gName,
+      groupAvatar: imgUrl,
+      members: updatedGroupMembers,
+      createdBy: {
+        id: userDetails.id,
+        name: userDetails.fullName,
+        avatar: userDetails.avatar,
+      },
+    };
+
+    console.log(groupMembers);
+
+    dispatch(generateGroup({ groupInfo, userDetails }))
+      .unwrap()
+      .then(() => {
+        onClose();
+        toast.success("Group Created Successfully !");
+      });
+
+    
+  };
+
+  console.log(groupMembers);
+  
   return (
     <>
       {open ? (
@@ -62,13 +110,13 @@ const Modal = ({ open, onClose }) => {
             id="modal"
           >
             <div
-              className="relative w-auto my-6 mx-auto max-w-sm"
+              className="relative w-auto mx-auto max-w-[400px]"
               ref={modalRef}
             >
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-[white] outline-none focus:outline-none">
+              <div className="border-0 rounded-lg shadow-xl relative flex flex-col w-full bg-[#eeeaea] outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-[blueGray]rounded-t">
+                <div className="flex items-start justify-between px-5 py-3 border-b border-solid rounded-t">
                   <h3 className="text-3xl font-semibold">All Users</h3>
                   <button
                     className="p-1 ml-auto bg-[transparent] border-0 text-[black] opacity-50 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -77,30 +125,219 @@ const Modal = ({ open, onClose }) => {
                     <i className="fa fa-close"></i>
                   </button>
                 </div>
+
                 {/*body*/}
-                <div className="listOuter relative p-6">
-                  <div className="listInnerContainer h-[250px] w-[300px] overflow-y-auto">
-                    <ul>
-                      <li>
-                        {friendFiltered.length < 1
-                          ? "No users found"
-                          : friendFiltered.map((user, index) => (
-                            <UserCard func={onClose} user={user} key={index} />
-                          ))}
-                      </li>
-                    </ul>
+                <div className="listOuter ">
+                  <div
+                    className={`listInnerContainer ${
+                      createGroup
+                        ? "!h-[450px] w-[400px]"
+                        : "h-[300px] w-[350px]"
+                    } relative overflow-y-auto`}
+                  >
+                    {createGroup ? (
+                      <>
+                        <div className="creatingGroup p-3 ">
+                          <div className="backButton flex justify-between items-center">
+                            <Button
+                              btnText={
+                                <>
+                                  &nbsp;
+                                  <i className="fa fa-arrow-left"></i>
+                                </>
+                              }
+                              btnFun={() => {
+                                setCreateGroup(false);
+                              }}
+                              className="!text-xs text-darkPurple"
+                            />
+                            <div className="formElement">
+                              <label
+                                htmlFor="gName"
+                                className="text-sm font-semibold"
+                              >
+                                Group Name :
+                              </label>
+                              <input
+                                id="gName"
+                                type="text"
+                                onChange={(e) => {
+                                  setGName(e.target.value);
+                                }}
+                                placeholder="Enter Group Name"
+                                className="!p-2 text-xs !w-full"
+                                autoFocus
+                              />
+                            </div>
+                          </div>
+
+                          <div className="CreateGroupForm px-1">
+                            <div className="formElement">
+                              <label
+                                className="text-sm font-semibold"
+                                htmlFor="profilePhoto"
+                              >
+                                Group Profile Photo :
+                              </label>
+                              <input
+                                id="profilePhoto"
+                                type="file"
+                                onChange={(e) => {
+                                  setImg(e.target.files[0]);
+                                }}
+                              />
+                            </div>
+                            <div className="allUsersList">
+                              <h5 className="font-semibold">Add Users : </h5>
+                              <div className="userListContainer !h-[200px] overflow-y-auto p-2">
+                                <ul>
+                                  <li>
+                                    {userFiltered?.map((user, index) => (
+                                      <UserCard
+                                        user={user}
+                                        key={index}
+                                        from="createGroup"
+                                      />
+                                    ))}
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+
+                            <div className="submitButton">
+                              <Button
+                                btnText={
+                                  <>
+                                    Create &nbsp;
+                                    <i className="fa-solid fa-arrow-right-to-bracket"></i>
+                                  </>
+                                }
+                                className="bg-greyPurple !text-[#fff] border-none mt-5"
+                                btnFun={handleCreateGroup}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex flex-wrap">
+                        <div className="w-full">
+                          {/* Actual Content To Show In The Tabs */}
+                          <div className="relative flex flex-col min-w-0 break-words bg-[transparent] w-full h-[250px] overflow-y-auto ">
+                            <div className="px-4 py-5 flex-auto">
+                              <div className="tab-content tab-space">
+                                {/* Content For Single Chat */}
+                                <div
+                                  className={
+                                    openTab === "chat" ? "block" : "hidden"
+                                  }
+                                  id="singleChat"
+                                >
+                                  {/* display all available chats */}
+                                  <ul>
+                                    <li>
+                                      {friendFiltered.length < 1
+                                        ? "No users found"
+                                        : friendFiltered.map((user, index) => (
+                                            <UserCard
+                                              func={onClose}
+                                              user={user}
+                                              key={index}
+                                            />
+                                          ))}
+                                    </li>
+                                  </ul>
+                                </div>
+                                {/* Content For The Group Chat */}
+                                <div
+                                  className={
+                                    openTab === "group" ? "block" : "hidden"
+                                  }
+                                  id="groupChat"
+                                >
+                                  <div
+                                    className="createGroup"
+                                    onClick={() => setCreateGroup(true)}
+                                  >
+                                    <Button
+                                      btnText={
+                                        <>
+                                          Create New Group &nbsp;
+                                          <i className="fa fa-plus"></i>
+                                        </>
+                                      }
+                                      className="!text-xs mb-4 text-darkPurple"
+                                    />
+                                  </div>
+
+                                  {
+                                    // eslint-disable-next-line no-constant-condition
+                                    false ? (
+                                      <GroupCard
+                                        groupName="Friends Forever"
+                                        groupAvatar="https://static.vecteezy.com/system/resources/previews/028/711/754/non_2x/diverse-group-of-people-chat-with-a-personal-coach-small-business-ai-generated-free-png.png"
+                                      />
+                                    ) : (
+                                      <p>No Groups To Show</p>
+                                    )
+                                  }
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/* Tabs For Switching Between Single Chat And Group Chat */}
+                          <div className="navTabs ">
+                            <ul
+                              className="flex list-none flex-wrap flex-row border-t absolute !bottom-0 !bg-purple w-full"
+                              role="tablist"
+                            >
+                              {/* Single Chat */}
+                              <li className="flex-auto text-center border-r">
+                                <a
+                                  className={
+                                    "text-lg font-bold uppercase py-3 shadow-lg rounded block leading-normal " +
+                                    (openTab === "chat"
+                                      ? `text-[#b6b4eb]`
+                                      : ` text-[#7c7c7c]`)
+                                  }
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    switchTab("chat");
+                                  }}
+                                  data-toggle="tab"
+                                  href="#singleChat"
+                                  role="tablist"
+                                >
+                                  <i className="fa fa-user"></i>
+                                </a>
+                              </li>
+                              {/* Group Chat */}
+                              <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                                <a
+                                  className={
+                                    "text-lg font-bold uppercase py-3 shadow-lg rounded block leading-normal " +
+                                    (openTab === "group"
+                                      ? `text-[#b6b4eb]`
+                                      : ` text-[#7c7c7c]`)
+                                  }
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    switchTab("group");
+                                  }}
+                                  data-toggle="tab"
+                                  href="#groupChat"
+                                  role="tablist"
+                                >
+                                  <i className="fa fa-users"></i>
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-                {/*footer*/}
-                {/* <div className="flex items-center justify-end p-6 border-t border-solid border-[#c3c3c3] rounded-b">
-                  <button
-                    className="text-[red] background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={onClose}
-                  >
-                    Close
-                  </button>
-                </div> */}
               </div>
             </div>
           </div>

@@ -50,7 +50,7 @@ const Home = () => {
           <div className="navRight sm:block hidden">
             {!isUser ? (
               <>
-                <div className="btnContainer flex gap-5">
+                <div className="btnContainer flex  gap-5">
                   <Button btnText="Log In" path="/login" />
                   <Button btnText="Sign Up" path="signup" />
                 </div>
@@ -141,7 +141,7 @@ const Home = () => {
                   <li>
                     {!isUser ? (
                       <>
-                        <div className="btnContainer flex gap-5">
+                        <div className="btnContainer flex flex-col items-center gap-10">
                           <Button btnText="Log In" path="/login" />
                           <Button btnText="Sign Up" path="signup" />
                         </div>

@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import Button from "../Common/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
@@ -93,11 +93,12 @@ const LoginForm = () => {
         />
         <p className="errorPara">{errors.password?.message}</p>
       </div>
+      <p className="text-[#949393d7] mb-4 sm:hidden block">Dont`t have a account ? <Link to="/signup"><span className="text-lightPurple font-bold"> SignUp Here </span></Link> </p>
       <div className="formElement">
         <Button
           btnText={"Log In"}
           btnFun={handleSubmit(submitForm)}
-          className="!text-darkPurple bg-lightPurple border-none"
+          className="!text-[#fff] bg-lightPurple border-none"
         />
       </div>
     </form>
