@@ -58,57 +58,6 @@ const ChatSelected = () => {
     dispatch(setSelectedChat(null));
   };
 
-//   const handleLastMessage = async (message) =>{
-//     try {
-//       const userChatRef = doc(db, "UsersChat", selectedChat.user.id);
-//       const userChatTwoRef = doc(db, "UsersChat", userDetails.id);
-
-//       const newData = {lastMessage: message,updatedAt: Date.now(),}
-  
-//       const userChatSnapshot = await getDoc(userChatRef);
-//       const userChatTwoSnapshot = await getDoc(userChatTwoRef);
-      
-//       console.log(userChatSnapshot,userChatTwoSnapshot,"SnapShots");
-      
-
-// // Deep clone to avoid accidental mutations
-//  // Clean up any unexpected data here
-//  let chatsArray = userChatSnapshot.data().chats || [];
-//  let chatsArrayTwo = userChatTwoSnapshot.data().chats || [];
-// // If any invalid object is present, remove it
-// chatsArray = chatsArray.filter(chat => chat.chatId);
-// chatsArrayTwo = chatsArrayTwo.filter(chat => chat.chatId);
-
-// console.log(chatsArray, chatsArrayTwo, "ChatArray ONE AND TWO");
-      
-//       const chatIndex = chatsArray.findIndex(chat=> chat.chatId === selectedChat.chatId);
-//       const chatIndexTwo = chatsArrayTwo.findIndex(chat=> chat.chatId === userDetails.chatId);
-  
-//       console.log(chatIndex,chatIndexTwo,"ChatIndexes");
-      
-//       chatsArray[chatIndex] = {...chatsArray[chatIndex], ...newData};
-      
-//       chatsArrayTwo[chatIndexTwo] = {...chatsArrayTwo[chatIndexTwo], ...newData};
-      
-
-//       console.log(chatsArray[chatIndex],chatsArrayTwo[chatIndexTwo]);
-      
-//       await updateDoc(userChatRef,{
-//         chats: chatsArray,
-//       })
-//       // await updateDoc(userChatTwoRef,{
-//       //   chats: chatsArray,
-//       // })
-  
-//       console.log(message);
-//     } catch (error) {
-//       console.log(error);
-      
-//     }
-   
-    
-//   }
-
   const handleSend = async (data) => {
     const chatsRef = collection(db, "chats");
     const newChatDocRef = doc(chatsRef, selectedChat.chatId);
@@ -124,7 +73,9 @@ const ChatSelected = () => {
       reset();
     });
 
-    // handleLastMessage(data.message)
+    await updateDoc(newChatDocRef,{
+      lastMessage: data.message,
+    })
   };
 
   useEffect(() => {

@@ -1,10 +1,26 @@
 import { useDispatch } from "react-redux";
 import { setSelectedChat } from "../../../reducers/userSlice";
+import { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../../firebase/config";
+
 
 /* eslint-disable react/prop-types */
 const FriendsCard = ({friend}) => {
+
   const friendData = friend.user;
   const dispatch = useDispatch();
+  const [chat,setChat] = useState();
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "chats", friend.chatId), (res) => {
+      setChat(res.data());
+    });
+
+    return () => {
+      unsub();
+    };
+  }, [friend.chatId]);
 
   return (
     <>
@@ -24,7 +40,7 @@ const FriendsCard = ({friend}) => {
             <h4 className="text-xl font-normal">{friendData.fullName}</h4>
           </div>
           <div className="lastMessage text-xs text-[#ffffff81]">
-            <p>{friend?.lastMessage || `hello`}</p>
+            <p>{chat?.lastMessage || ``}</p>
           </div>
         </div>
       </div>
