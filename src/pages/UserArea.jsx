@@ -4,7 +4,7 @@ import NoChatSelected from "../components/UserArea/Chats/NoChatSelected";
 import Tabs from "../components/UserArea/Tabs";
 import PageLoader from "../components/Common/PageLoader";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, logOutUser } from "../reducers/userSlice";
+import { fetchGroups, fetchUsers, logOutUser } from "../reducers/userSlice";
 import ChatSelected from "../components/UserArea/Chats/ChatSelected";
 import { useEffect, useState } from "react";
 import Modal from "../components/UserArea/Modals/AddFriendModal";
@@ -22,6 +22,7 @@ const UserArea = () => {
 
   useEffect(() => {
     dispatch(fetchUsers());
+    dispatch(fetchGroups());
   }, [dispatch]);
 
   if (loading) {

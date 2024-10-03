@@ -4,7 +4,7 @@ import GroupCard from "./Cards/GroupCard";
 import { useDispatch, useSelector } from "react-redux";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/config";
-import { setUserChats } from "../../reducers/userSlice";
+import { setUserChats,setUserGroups } from "../../reducers/userSlice";
 
 const Tabs = () => {
   const [openTab, setOpenTab] = useState("chat");
@@ -40,7 +40,7 @@ const Tabs = () => {
   
       // Dispatch user chats and groups separately, or merge as needed
       dispatch(setUserChats(chatData));
-  
+      dispatch(setUserGroups(groupData))
       // Optionally sort and set the combined data by updatedAt
       setChats(chatData);
       setGroups(groupData);

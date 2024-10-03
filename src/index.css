@@ -284,3 +284,8 @@ textarea {
 /* .messagesContainer {
   scroll-behavior: smooth;
 } */
+
+.bgContainer{
+  background: rgb(9,9,121);
+background: linear-gradient(90deg, rgba(9,9,121,1) 0%, rgba(83,92,145,1) 54%, rgba(146,144,195,1) 93%);
+}

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { auth, db } from "../firebase/config";
@@ -63,6 +64,7 @@ export const addUserFriends = createAsyncThunk(
 
       await setDoc(newChatDocRef, {
         createdAt: serverTimestamp(),
+        lastMessage: "",
         messages: [],
       });
 
@@ -70,7 +72,6 @@ export const addUserFriends = createAsyncThunk(
       await updateDoc(doc(userChatsRef, userDetails.id), {
         chats: arrayUnion({
           chatId: newChatDocRef.id,
-          lastMessage: "",
           updatedAt: Date.now(),
           senderId: userDetails.id,
           receiverId: user.id,
@@ -81,7 +82,6 @@ export const addUserFriends = createAsyncThunk(
       await updateDoc(doc(userChatsRef, user.id), {
         chats: arrayUnion({
           chatId: newChatDocRef.id,
-          lastMessage: "",
           updatedAt: Date.now(),
           senderId: user.id,
           receiverId: userDetails.id,
@@ -121,19 +121,21 @@ export const generateGroup = createAsyncThunk(
         const newGroupDocRef = doc(groupsRef);
 
         await setDoc(newGroupDocRef, {
-          createdAt: serverTimestamp(),
+          groupId: newGroupDocRef.id,
+          groupName: groupInfo.groupName,
+          groupAvatar: groupInfo.groupAvatar,
+          lastMessage: "",
+          groupMembers: groupInfo.members,
+          createdBy: groupInfo.createdBy,
+          updatedAt: Date.now(),
           messages: [],
         });
-        
+
         await updateDoc(doc(userChatsRef, userDetails.id), {
           groups: arrayUnion({
             groupId: newGroupDocRef.id,
             groupName: groupInfo.groupName,
             groupAvatar: groupInfo.groupAvatar,
-            lastMessage :"",
-            groupMembers: groupInfo.members,
-            createdBy : groupInfo.createdBy,
-            updatedAt: Date.now(),
           }),
         });
 
@@ -144,15 +146,10 @@ export const generateGroup = createAsyncThunk(
                 groupId: newGroupDocRef.id,
                 groupName: groupInfo.groupName,
                 groupAvatar: groupInfo.groupAvatar,
-                lastMessage :"",
-                groupMembers: groupInfo.members,
-                createdBy: groupInfo.createdBy,
-                updatedAt: Date.now(),
               }),
             });
           });
         }
-
       } else {
         throw new Error("NoGroupInfoFound");
       }
@@ -162,6 +159,61 @@ export const generateGroup = createAsyncThunk(
     }
   }
 );
+
+export const fetchGroups = createAsyncThunk(
+  "user/fetchGroups",
+  async (_, thunkAPI) => {
+    try {
+      const groupsCollectionRef = collection(db, "groupChats");
+      const querySnapshot = await getDocs(groupsCollectionRef);
+      const groups = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+      }));
+
+      return groups;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addUserToGroup = createAsyncThunk(
+  "user/addUserToGroup",
+  async ({ groupInfo, userDetails, userGroups }, thunkAPI) => {
+    try {
+      console.log(groupInfo, "groupInfo");
+      console.log(userDetails, "userDetails");
+      console.log(userGroups, "userGroups");
+
+      const groupChatsRef = collection(db, "groupChats");
+      const userGroupsRef = collection(db, "UsersChat");
+
+      // // Update the friends array using arrayUnion
+      // await updateDoc(doc(groupChatsRef, groupInfo.aboutGroup.groupId), {
+      //   "aboutGroup.groupMembers": arrayUnion({
+      //     userId: userDetails.id,
+      //     userName: userDetails.fullName,
+      //     userAvatar: userDetails.avatar,
+      //   }),
+      // });
+
+      await updateDoc(doc(userGroupsRef, userDetails.id), {
+        groups: arrayUnion({
+          groupId: groupInfo.id,
+          groupName: groupInfo.aboutGroup.groupName,
+          groupAvatar: groupInfo.aboutGroup.groupAvatar,
+          lastMessage: groupInfo.aboutGroup.lastMessage,
+          groupMembers: groupInfo.aboutGroup.members,
+          createdBy: groupInfo.createdBy,
+          updatedAt: Date.now(),
+        }),
+      });
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -169,11 +221,13 @@ const userSlice = createSlice({
     isUser: false,
     userDetails: null,
     selectedChat: null,
-    selectedGroupChat:null,
+    selectedGroupChat: null,
     allUsers: null,
     userLoading: false,
     groupMembers: [],
     userChats: [],
+    groupChats: null,
+    userGroups: [],
   },
   reducers: {
     setSelectedChat: (state, action) => {
@@ -190,8 +244,11 @@ const userSlice = createSlice({
         return member?.userId !== action.payload;
       });
     },
-    setSelectedGroupChat: (state,action)=>{
+    setSelectedGroupChat: (state, action) => {
       state.selectedGroupChat = action.payload;
+    },
+    setUserGroups: (state, action) => {
+      state.userGroups = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -227,6 +284,12 @@ const userSlice = createSlice({
       .addCase(fetchUsers.rejected, (state) => {
         state.allUsers = null;
         state.userLoading = false;
+      })
+      .addCase(fetchGroups.fulfilled, (state, action) => {
+        state.groupChats = action.payload;
+      })
+      .addCase(fetchGroups.rejected, (state) => {
+        state.groupChats = null;
       });
   },
 });
@@ -236,6 +299,7 @@ export const {
   setUserChats,
   addGroupMembers,
   deleteGroupMember,
+  setUserGroups,
 } = userSlice.actions;
 
 export default userSlice.reducer;

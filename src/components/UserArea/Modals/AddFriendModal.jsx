@@ -3,17 +3,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import UserCard from "../Cards/UserCard";
 import { useEffect, useRef, useState } from "react";
-import GroupCard from "../Cards/GroupCard";
 import Button from "../../Common/Button";
 import Upload from "../../../firebase/upload";
 import { generateGroup } from "../../../reducers/userSlice";
 import { toast } from "react-toastify";
+import ModalGroupCard from "../Cards/ModalGroupCard";
 
 const Modal = ({ open, onClose }) => {
   const [createGroup, setCreateGroup] = useState(false);
   const [gName, setGName] = useState("NoName");
   const [img, setImg] = useState();
-  const { allUsers, userDetails, userChats, groupMembers } = useSelector(
+  const { allUsers, userDetails, userChats, groupMembers,groupChats } = useSelector(
     (state) => state.user
   );
   const dispatch = useDispatch();
@@ -93,8 +93,6 @@ const Modal = ({ open, onClose }) => {
         onClose();
         toast.success("Group Created Successfully !");
       });
-
-    
   };
   
   return (
@@ -267,12 +265,13 @@ const Modal = ({ open, onClose }) => {
                                   </div>
 
                                   {
-                                    // eslint-disable-next-line no-constant-condition
-                                    false ? (
-                                      <GroupCard
-                                        groupName="Friends Forever"
-                                        groupAvatar="https://static.vecteezy.com/system/resources/previews/028/711/754/non_2x/diverse-group-of-people-chat-with-a-personal-coach-small-business-ai-generated-free-png.png"
-                                      />
+                                   
+                                    groupChats.length>0 ? (
+                                      groupChats.map((group ,index)=>{
+                                        return <ModalGroupCard groupInfo={group}
+                                        key={index}
+                                        />
+                                      })
                                     ) : (
                                       <p>No Groups To Show</p>
                                     )
