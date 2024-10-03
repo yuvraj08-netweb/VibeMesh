@@ -41,8 +41,6 @@ const UserCard = ({ func, user, from = "" }) => {
       dispatch(addGroupMembers(userData));
       setMemberAdded(true);
     }
-
-    console.log("MemberAdded!");
   };
 
 

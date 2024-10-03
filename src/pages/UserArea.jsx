@@ -4,11 +4,12 @@ import NoChatSelected from "../components/UserArea/Chats/NoChatSelected";
 import Tabs from "../components/UserArea/Tabs";
 import PageLoader from "../components/Common/PageLoader";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchUsers, logOutUser } from "../reducers/userSlice";
+import { fetchUsers, logOutUser } from "../reducers/userSlice";
 import ChatSelected from "../components/UserArea/Chats/ChatSelected";
 import { useEffect, useState } from "react";
 import Modal from "../components/UserArea/Modals/AddFriendModal";
 import InfoModal from "../components/UserArea/Modals/UserInfoModal";
+import GroupChatSelected from "../components/UserArea/Chats/GroupChatSelected";
 
 const UserArea = () => {
   const { userDetails, loading, selectedChat } = useSelector(
@@ -22,8 +23,7 @@ const UserArea = () => {
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
-  
-  
+
   if (loading) {
     return <PageLoader />;
   }
@@ -40,15 +40,15 @@ const UserArea = () => {
     setOpenModal(true);
   };
 
-  const handleViewInfo =()=>{
+  const handleViewInfo = () => {
     setViewInfo(true);
-  }
+  };
   return (
     <div>
       {userDetails ? (
         <>
-          <div className="userArea  sm:min-h-screen min-h-[90vh] w-full flex items-center text-[#fff]">
-            <div className="centerCard sm:min-h-[90vh] min-h-[80vh] w-[90%] m-auto">
+          <div className="userArea min-h-screen  w-full flex items-center text-[#fff]">
+            <div className="centerCard min-h-[90vh] w-[90%] m-auto">
               <div className="innerContainer flex min-h-[inherit]">
                 {/* Left Side Area */}
                 <div
@@ -60,7 +60,10 @@ const UserArea = () => {
                 >
                   {/* For User Avatar and Logout */}
                   <div className="top-section flex justify-between items-center p-4 ">
-                    <div className="userInfo flex items-center cursor-pointer" onClick={handleViewInfo}>
+                    <div
+                      className="userInfo flex items-center cursor-pointer"
+                      onClick={handleViewInfo}
+                    >
                       <div className="userAvatar max-w-max">
                         <img
                           src={userDetails.avatar}
@@ -129,12 +132,20 @@ const UserArea = () => {
                       : "md:block hidden !w-full"
                   }
                 >
-                  {selectedChat ? <ChatSelected /> : <NoChatSelected />}
+                  {selectedChat ? (
+                    selectedChat?.chatId ? (
+                      <ChatSelected />
+                    ) : (
+                      <GroupChatSelected />
+                    )
+                  ) : (
+                    <NoChatSelected />
+                  )}
                 </div>
               </div>
             </div>
             <Modal open={openModal} onClose={() => setOpenModal(false)} />
-            <InfoModal open={viewInfo} onClose={() => setViewInfo(false)}/>
+            <InfoModal open={viewInfo} onClose={() => setViewInfo(false)} />
           </div>
         </>
       ) : (

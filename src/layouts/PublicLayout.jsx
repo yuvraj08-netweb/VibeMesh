@@ -7,8 +7,6 @@ const PublicLayout = () => {
   const { loading, userDetails } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
-  console.log(loading, "loading loading")
-
   useEffect(() => {
     if (typeof loading === "object") {
       return;

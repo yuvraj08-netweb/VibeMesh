@@ -74,7 +74,7 @@ const Modal = ({ open, onClose }) => {
     
     const imgUrl =
       (await Upload(img)) ||
-      "https://smaabacus.com/themes/user/assets_old/img/dd/avatar/male.png";
+      "https://png.pngtree.com/png-vector/20220623/ourmid/pngtree-business-working-team-people-approach-under-building-concourse-windows-png-image_5181530.png";
 
     const groupInfo = {
       groupName: gName,
@@ -87,8 +87,6 @@ const Modal = ({ open, onClose }) => {
       },
     };
 
-    console.log(groupMembers);
-
     dispatch(generateGroup({ groupInfo, userDetails }))
       .unwrap()
       .then(() => {
@@ -98,8 +96,6 @@ const Modal = ({ open, onClose }) => {
 
     
   };
-
-  console.log(groupMembers);
   
   return (
     <>
@@ -131,14 +127,14 @@ const Modal = ({ open, onClose }) => {
                   <div
                     className={`listInnerContainer ${
                       createGroup
-                        ? "!h-[450px] w-[400px]"
+                        ? "sm:!h-[450px] sm:w-[400px] !h-[500px] w-[300px]"
                         : "h-[300px] w-[350px]"
                     } relative overflow-y-auto`}
                   >
                     {createGroup ? (
                       <>
                         <div className="creatingGroup p-3 ">
-                          <div className="backButton flex justify-between items-center">
+                          <div className="backButton flex sm:flex-row flex-col justify-between sm:items-center">
                             <Button
                               btnText={
                                 <>
@@ -151,7 +147,7 @@ const Modal = ({ open, onClose }) => {
                               }}
                               className="!text-xs text-darkPurple"
                             />
-                            <div className="formElement">
+                            <div className="formElement sm:mt-0 mt-5">
                               <label
                                 htmlFor="gName"
                                 className="text-sm font-semibold"

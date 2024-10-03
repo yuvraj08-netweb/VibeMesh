@@ -32,8 +32,7 @@ const ContactForm = () => {
     },
   });
 
-  const submitForm = (data) =>{
-    console.log(data);
+  const submitForm = () =>{
     reset();
   }
   return (

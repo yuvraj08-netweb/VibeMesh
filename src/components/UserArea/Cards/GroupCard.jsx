@@ -10,7 +10,7 @@ const GroupCard = ({ groupInfo, className }) => {
     <>
       <div
         className="card flex items-center h-[50px] cursor-pointer mb-4"
-        onClick={() => dispatch(setSelectedChat())}
+        onClick={() => dispatch(setSelectedChat(groupInfo))}
       >
         <div className="imgContianer !w-[50px] !h-[50px]">
           <img

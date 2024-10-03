@@ -77,7 +77,7 @@ const SignUpForm = () => {
 
       imgUrl =
         (await upload(img)) ||
-        "https://smaabacus.com/themes/user/assets_old/img/dd/avatar/male.png";
+        "https://img.freepik.com/premium-vector/silver-membership-icon-default-avatar-profile-icon-membership-icon-social-media-user-image-vector-illustration_561158-4195.jpg";
 
       if (user) {
         await setDoc(doc(db, "Users", user.uid), {

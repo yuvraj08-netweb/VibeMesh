@@ -42,7 +42,7 @@ const Tabs = () => {
       dispatch(setUserChats(chatData));
   
       // Optionally sort and set the combined data by updatedAt
-      setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+      setChats(chatData);
       setGroups(groupData);
     });
   
@@ -56,8 +56,6 @@ const Tabs = () => {
   const switchTab = (tab) => {
     setOpenTab(tab);
   };
-
-  console.log(groups);
   
   return (
     <>

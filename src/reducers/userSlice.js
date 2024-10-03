@@ -36,8 +36,6 @@ export const fetchUsers = createAsyncThunk(
 export const fetchUserData = createAsyncThunk(
   "user/fetchUserData",
   async (_, thunkAPI) => {
-    console.log("fetched");
-
     try {
       const user = await getAuthUser();
       const docSnap = await getDoc(doc(db, "Users", user.uid));
@@ -117,7 +115,6 @@ export const generateGroup = createAsyncThunk(
   async ({ groupInfo, userDetails }, thunkAPI) => {
     try {
       if (groupInfo) {
-        console.log(groupInfo.members);
         const userChatsRef = collection(db, "UsersChat");
         const groupsRef = collection(db, "groupChats");
 
@@ -172,6 +169,7 @@ const userSlice = createSlice({
     isUser: false,
     userDetails: null,
     selectedChat: null,
+    selectedGroupChat:null,
     allUsers: null,
     userLoading: false,
     groupMembers: [],
@@ -191,6 +189,9 @@ const userSlice = createSlice({
       state.groupMembers = state.groupMembers.filter((member) => {
         return member?.userId !== action.payload;
       });
+    },
+    setSelectedGroupChat: (state,action)=>{
+      state.selectedGroupChat = action.payload;
     },
   },
   extraReducers: (builder) => {
