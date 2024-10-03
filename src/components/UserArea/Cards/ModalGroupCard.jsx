@@ -3,6 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../Common/Button";
 import { addUserToGroup } from "../../../reducers/userSlice";
+import ProfileImage from "../../Common/ProfileImage"
 
 const ModalGroupCard = ({ groupInfo }) => {
     const {userDetails,userGroups} = useSelector(state => state.user)
@@ -17,10 +18,9 @@ const ModalGroupCard = ({ groupInfo }) => {
       <div className="card flex justify-between items-center h-[50px] cursor-pointer mb-4">
         <div className="groupInfo flex items-center">
           <div className="imgContianer !w-[50px] !h-[50px]">
-            <img
-              src={groupInfo.groupAvatar}
-              alt="profilePhoto"
-              className="w-[50px] h-[50px]  rounded-[100%] border"
+            <ProfileImage
+              imgSrc={groupInfo.groupAvatar}
+              className="!w-[50px] !h-[50px]"
             />
           </div>
           <div className="friendInfo ml-3">

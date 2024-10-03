@@ -3,6 +3,7 @@ import Button from "../components/Common/Button";
 import ContactForm from "../components/Forms/ContactForm";
 import { useEffect, useState } from "react";
 import PageLoader from "../components/Common/PageLoader";
+import ProfileImage from "../components/Common/ProfileImage";
 
 const Home = () => {
   const { isUser, userDetails, loading} = useSelector((state) => state.user);
@@ -23,7 +24,7 @@ const Home = () => {
           <div className="navLeft">
             <div className="brandLogo max-w-[200px]">
               <img
-                src="../../public/assets/logo(s)/VibeMesh-Light.png"
+                src="/assets/logo(s)/VibeMesh-Light.png"
                 alt="brandLogo"
                 className="w-full"
               />
@@ -59,7 +60,7 @@ const Home = () => {
               <>
                 <div className="userLoggedIn flex items-center gap-2">
                   <div className="userPP">
-                    <img
+                    <ProfileImage
                       src={userDetails.avatar}
                       alt=""
                       className="w-[40px] rounded-[100%]"
@@ -110,11 +111,9 @@ const Home = () => {
                       <>
                         <div className="userLoggedIn flex flex-col tems-center gap-2">
                           <div className="userInfo flex items-center gap-4">
-                            <div className="userPP">
-                              <img
-                                src={userDetails.avatar}
-                                alt=""
-                                className="w-[40px] rounded-[100%]"
+                            <div className="userPP ">
+                              <ProfileImage 
+                                imgSrc={userDetails.avatar}
                               />
                             </div>
                             <div className="userName">{userDetails.fullName}</div>
@@ -189,6 +188,7 @@ const Home = () => {
                   Weaving seamless connections, one vibe at a time.
                 </p>
               </div>
+              {/* Wow */}
               <div className="lowerInfo max-w-[450px] md:mb-0 mb-16">
                 <p className="mt-8 mb-5">
                   Join VibeMesh and experience chat redefined—simple, secure,
@@ -203,7 +203,7 @@ const Home = () => {
             data-aos="fade-left"
           >
             <div className="heroImgContainer">
-              <img src="../../public/assets/svg/landing.svg" alt="illustration" />
+              <img src="/assets/svg/landing.svg" alt="illustration" />
             </div>
           </div>
         </div>
@@ -217,7 +217,7 @@ const Home = () => {
           <div className="aboutLeft md:w-[50%]">
             <div className="aboutImage w-[80%] m-auto" data-aos="flip-up">
               <img
-                src="../../public/assets/svg/about.svg"
+                src="/assets/svg/about.svg"
                 alt="illustration"
                 className="w-full"
               />
@@ -268,7 +268,7 @@ const Home = () => {
           <div className="contactRight  w-1/2 md:block hidden">
             <div className="contactImg w-[80%] mx-auto">
               <img
-                src="../../public/assets/svg/contact.svg"
+                src="/assets/svg/contact.svg"
                 alt="illustration"
                 className="w-full"
               />
@@ -282,7 +282,7 @@ const Home = () => {
           <div className="footerLeftOne">
             <div className="footerImg max-w-[300px] mx-auto">
               <img
-                src="../../public/assets/logo(s)/VibeMesh-Light.png"
+                src="/assets/logo(s)/VibeMesh-Light.png"
                 alt="brandLogo"
                 className="w-full"
               />

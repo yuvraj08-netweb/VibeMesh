@@ -17,6 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import GroupMessage from "../Messages/GroupMessage";
+import ProfileImage from "../../Common/ProfileImage";
 
 const GroupChatSelected = () => {
     // Schema for message validation
@@ -81,7 +82,9 @@ const GroupChatSelected = () => {
       reset();
     });
 
-    // handleLastMessage(data.message)
+    await updateDoc(newChatDocRef,{
+      lastMessage : data.message,
+    })
   };
 
   useEffect(() => {
@@ -89,7 +92,6 @@ const GroupChatSelected = () => {
       endRef.current.scrollIntoView({
         top: endRef.current.scrollHeight,
         behavior: "smooth",
-        // block: "end",
       });
   }, [chat.messages]);
 
@@ -110,10 +112,9 @@ const GroupChatSelected = () => {
                 btnFun={handleBack}
               />
               <div className="imgContainer">
-                <img
-                  src={selectedChat.groupAvatar}
-                  alt="pp"
-                  className="w-[50px] h-[50px] rounded-[100%] border"
+                <ProfileImage
+                  imgSrc={selectedChat.groupAvatar}
+                  className="!w-[50px] !h-[50px]"
                 />
               </div>
               <div className="friendName ml-4">

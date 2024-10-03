@@ -15,6 +15,8 @@ import NoMessage from "../Messages/NoMessage";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import ProfileImage from "../../Common/ProfileImage";
+import ChatsDropDown from "../Dropdowns/chatsDropDown";
 
 const ChatSelected = () => {
   const schema = yup.object().shape({
@@ -35,13 +37,13 @@ const ChatSelected = () => {
   });
 
   const [chat, setChat] = useState([]);
- 
+
   const endRef = useRef(null);
 
   const dispatch = useDispatch();
 
   const { selectedChat, userDetails } = useSelector((state) => state.user);
-  
+
   const selectedUser = selectedChat.user;
 
   useEffect(() => {
@@ -58,6 +60,15 @@ const ChatSelected = () => {
     dispatch(setSelectedChat(null));
   };
 
+  useEffect(() => {
+    if (chat?.messages?.length)
+      endRef.current.scrollIntoView({
+        top: endRef.current.scrollHeight,
+        behavior: "smooth",
+        // block: "end",
+      });
+  }, [chat.messages]);
+
   const handleSend = async (data) => {
     const chatsRef = collection(db, "chats");
     const newChatDocRef = doc(chatsRef, selectedChat.chatId);
@@ -73,19 +84,10 @@ const ChatSelected = () => {
       reset();
     });
 
-    await updateDoc(newChatDocRef,{
+    await updateDoc(newChatDocRef, {
       lastMessage: data.message,
-    })
+    });
   };
-
-  useEffect(() => {
-    if (chat?.messages?.length)
-      endRef.current.scrollIntoView({
-        top: endRef.current.scrollHeight,
-        behavior: "smooth",
-        // block: "end",
-      });
-  }, [chat.messages]);
 
   return (
     <>
@@ -103,29 +105,28 @@ const ChatSelected = () => {
               btnFun={handleBack}
             />
             <div className="imgContainer">
-              <img
-                src={selectedUser.avatar}
-                alt="pp"
-                className="w-[50px] h-[50px] rounded-[100%] border"
-              />
+              <ProfileImage imgSrc={selectedUser.avatar} />
             </div>
             <div className="friendName ml-4">
               <h2 className="text-xl">{selectedUser.fullName}</h2>
             </div>
           </div>
-          <Button
-            btnText={
-              <>
-                <i className="fa-solid fa-ellipsis-vertical"></i>
-              </>
-            }
-            className="border-none text-3xl !py-0"
-          />
+          <div className="Button">
+            {/* <Button
+              btnText={
+                <>
+                  <i className="fa-solid fa-ellipsis-vertical"></i>
+                </>
+              }
+              className="border-none text-3xl !py-0"
+            /> */}
+            <ChatsDropDown/>
+          </div>
         </section>
 
         {/* Chat Area */}
-        <section className="chatArea py-20">
-          <div className="messagesContainer max-h-[68vh] overflow-y-scroll p-5 ">
+        <section className="chatArea pt-[65px]">
+          <div className="messagesContainer max-h-[66vh] overflow-y-scroll p-5 ">
             <ul className="">
               <li className="">
                 {chat?.messages?.length > 0 ? (

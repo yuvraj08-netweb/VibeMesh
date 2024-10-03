@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import ProfileImage from "../../Common/ProfileImage";
 
 const Message = ({ message }) => {
 
@@ -32,14 +33,12 @@ const Message = ({ message }) => {
             : "message flex mb-5 items-center gap-5"
         }
       >
-        <img
-          className="inline-block size-9 rounded-full"
-          src={
+        <ProfileImage
+          imgSrc={
             senderDetails?.id === userDetails?.id
-              ? senderDetails?.avatar
-              : senderDetails?.avatar
+            ? userDetails?.avatar
+            : senderDetails?.avatar
           }
-          alt="Avatar"
         />
         <div>
           {/* Card */}

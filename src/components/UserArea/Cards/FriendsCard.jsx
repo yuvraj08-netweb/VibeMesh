@@ -3,6 +3,7 @@ import { setSelectedChat } from "../../../reducers/userSlice";
 import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase/config";
+import ProfileImage from "../../Common/ProfileImage";
 
 
 /* eslint-disable react/prop-types */
@@ -29,11 +30,11 @@ const FriendsCard = ({friend}) => {
         onClick={() => dispatch(setSelectedChat(friend))}
       >
         <div className="imgContianer w-[50px]">
-          <img
-            src={friendData.avatar}
-            alt="profilePhoto"
-            className="w-[50px] h-[50px]  rounded-[100%] border"
-          />
+          <ProfileImage
+          imgSrc={friendData.avatar}
+          className="!w-[50px] !h-[50px]"
+         />
+  
         </div>
         <div className="friendInfo ml-3">
           <div className="fName mb-1 text-left">

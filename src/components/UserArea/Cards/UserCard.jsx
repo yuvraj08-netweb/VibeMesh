@@ -8,6 +8,7 @@ import {
 } from "../../../reducers/userSlice";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import ProfileImage from "../../Common/ProfileImage"
 
 const UserCard = ({ func, user, from = "" }) => {
   const [memberAdded, setMemberAdded] = useState(false);
@@ -49,10 +50,8 @@ const UserCard = ({ func, user, from = "" }) => {
       <div className="card flex items-center justify-between mb-3">
         <div className="userData flex items-center gap-3">
           <div className="imgContainer">
-            <img
-              src={user.avatar}
-              alt=""
-              className="w-[50px] h-[50px] rounded-[100%]"
+            <ProfileImage
+              imgSrc={user.avatar}
             />
           </div>
           <div className="nameHeading">
