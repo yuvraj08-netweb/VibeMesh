@@ -61,7 +61,7 @@ const Home = () => {
                 <div className="userLoggedIn flex items-center gap-2">
                   <div className="userPP">
                     <ProfileImage
-                      src={userDetails.avatar}
+                      imgSrc={userDetails.avatar}
                       alt=""
                       className="w-[40px] rounded-[100%]"
                     />

@@ -33,6 +33,7 @@ const ChatsDropDown = () => {
 
   const handleView = () => {
     setViewInfo(true);
+    toggleMenu()
   };
 
   const handleRemoveUser = async () => {

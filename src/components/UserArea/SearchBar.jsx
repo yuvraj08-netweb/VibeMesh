@@ -85,7 +85,7 @@ const SearchBar = ({ userChats, userDetails }) => {
   };
 
   return (
-    <div className="searchBar w-full flex border-b-2 p-3 relative">
+    <div className="searchBar w-full flex p-3 relative">
       <input
         type="search"
         value={searchInput}

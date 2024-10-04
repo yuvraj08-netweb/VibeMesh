@@ -108,7 +108,7 @@ const InfoModal = ({ open, onClose ,from}) => {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="bodyContent w-full h-[500px] overflow-y-auto">
+                <div className="bodyContent w-full h-[450px] overflow-y-auto">
                   <div className="profilePhotoContainer relative">
                     <div className="bgContainer min-h-[150px]  mx-auto">
 
