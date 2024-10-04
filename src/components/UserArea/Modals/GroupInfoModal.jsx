@@ -95,10 +95,6 @@ const GroupInfoModal = ({ open, onClose }) => {
                           {" "}
                           Group Members :
                         </h5>
-                        {console.log(
-                          selectedGroupChatData,
-                          "selectedGroupChatData"
-                        )}
                         <div className="listContainer">
                           <ul>
                             {selectedGroupChatData?.groupMembers.length > 0 ? (

@@ -13,7 +13,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { setSelectedChat } from "../../../reducers/userSlice";
 import Button from "../../Common/Button";
-import GroupInfoModal from "../Modals/GroupInfoModal"
 import { db } from "../../../firebase/config";
 import NoMessage from "../Messages/NoMessage";
 import GroupMessage from "../Messages/GroupMessage";
