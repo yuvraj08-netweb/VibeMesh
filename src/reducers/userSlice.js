@@ -181,9 +181,6 @@ export const addUserToGroup = createAsyncThunk(
   "user/addUserToGroup",
   async ({ groupInfo, userDetails, userGroups }, thunkAPI) => {
     try {
-      console.log(groupInfo, "groupInfo");
-      console.log(userDetails.id, "userDetails");
-      console.log(userGroups, "userGroups");
 
       const groupChatsRef = collection(db, "groupChats");
       const userGroupsRef = doc(db, "UsersChat",userDetails.id);

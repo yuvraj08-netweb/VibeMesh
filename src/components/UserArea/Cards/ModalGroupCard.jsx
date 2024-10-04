@@ -2,13 +2,16 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../Common/Button";
-import { addUserToGroup } from "../../../reducers/userSlice";
+import { addUserToGroup, setSelectedGroupChatData } from "../../../reducers/userSlice";
 import ProfileImage from "../../Common/ProfileImage";
+import { useState } from "react";
+import GroupInfoModal from "../Modals/GroupInfoModal";
 
 const ModalGroupCard = ({ groupInfo, func }) => {
   const { userDetails, userGroups } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  const [viewInfo, setViewInfo] = useState(false);
 
   const handleJoinGroup = () => {
     dispatch(addUserToGroup({ groupInfo, userDetails, userGroups }))
@@ -19,7 +22,10 @@ const ModalGroupCard = ({ groupInfo, func }) => {
       });
   };
 
-  const handleViewGroup = () => {};
+  const handleViewGroup = () => {
+    setViewInfo(prev => !prev);
+    dispatch(setSelectedGroupChatData(groupInfo));
+  };
 
   return (
     <>
@@ -63,6 +69,7 @@ const ModalGroupCard = ({ groupInfo, func }) => {
             </div>
           </div>
         </div>
+        <GroupInfoModal open={viewInfo} onClose={() => setViewInfo(false)} />
       </div>
     </>
   );

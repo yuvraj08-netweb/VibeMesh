@@ -118,9 +118,9 @@ const Modal = ({ open, onClose }) => {
                   <div
                     className={`listInnerContainer ${
                       createGroup
-                        ? "sm:!h-[450px] sm:w-[400px] !h-[500px] w-[300px]"
+                        ? "sm:!h-[450px] sm:w-[400px] !h-[500px] w-[300px] overflow-y-auto"
                         : "h-[300px] w-[350px]"
-                    } relative overflow-y-auto`}
+                    } relative`}
                   >
                     {createGroup ? (
                       <>

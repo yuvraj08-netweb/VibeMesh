@@ -3,7 +3,7 @@ import Button from '../../Common/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import GroupInfoModal from '../Modals/GroupInfoModal';
 import { doc, updateDoc, arrayRemove, collection } from "firebase/firestore"; 
-import { setSelectedChat } from '../../../reducers/userSlice';
+import { setSelectedChat, setSelectedGroupChatData } from '../../../reducers/userSlice';
 import { toast } from 'react-toastify';
 import { db } from '../../../firebase/config';
 
@@ -76,6 +76,7 @@ const handleExitGroup = async () =>{
     // Actions after successful removal
     toggleMenu();
     dispatch(setSelectedChat(null));
+    dispatch(setSelectedGroupChatData(null));
     toast.success("Group Left!");
   } catch (error) {
     console.error("Error leaving group: ", error);

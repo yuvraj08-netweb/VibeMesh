@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
+import ProfileImage from "../../Common/ProfileImage";
 
-const GroupInfoModal = ({ open, onClose }) => {
-  const {selectedGroupChatData } = useSelector((state) => state.user);
+const GroupInfoModal = ({ open, onClose}) => {
+  const { selectedGroupChatData } = useSelector((state) => state.user);
 
   const modalRef = useRef(null);
+  const date = new Date(selectedGroupChatData?.updatedAt);
 
   // Handle clicking outside of the modal
   useEffect(() => {
@@ -26,13 +28,17 @@ const GroupInfoModal = ({ open, onClose }) => {
 
   return (
     <>
-      {open ? (
+      {open ?
+    (
         <>
           <div
-            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none text-[black]"
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 !z-[10000] outline-none focus:outline-none text-[black]"
             id="modal"
           >
-            <div className="relative sm:w-[400px] w-[300px] my-6 mx-auto " ref={modalRef}>
+            <div
+              className="relative sm:w-[400px] w-[300px] my-6 mx-auto !z-[1000] "
+              ref={modalRef}
+            >
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-[#fff] outline-none focus:outline-none">
                 {/*header*/}
@@ -46,14 +52,12 @@ const GroupInfoModal = ({ open, onClose }) => {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="bodyContent w-full h-[500px] overflow-y-auto">
+                <div className="bodyContent w-full h-[500px] overflow-y-auto !z-[1000]">
                   <div className="profilePhotoContainer relative">
-                    <div className="bgContainer min-h-[150px]  mx-auto">
-
-                    </div>
+                    <div className="bgContainer min-h-[150px]  mx-auto"></div>
                     <div className="imgContainer w-[200px] mx-auto  -mt-[90px]">
                       <img
-                        src={selectedGroupChatData.groupAvatar}
+                        src={selectedGroupChatData?.groupAvatar}
                         alt="profilePicture"
                         className="rounded-xl"
                       />
@@ -63,20 +67,62 @@ const GroupInfoModal = ({ open, onClose }) => {
                   <div className="userInfo p-5">
                     <div className="name text-center">
                       <h5 className="text-xl font-semibold">
-                        {selectedGroupChatData.groupName} 
+                        {selectedGroupChatData?.groupName}
                       </h5>
                     </div>
                     <div className="otherInfo mt-10">
                       <div className="id">
-                        <div className="userId flex gap-4">
-                          <i className="fa fa-user"></i>
-                          User Id : <span className="text-sm break-words max-w-[200px]"> {selectedGroupChatData.d}</span>
+                        <div className="userId flex gap-4 items-center">
+                          Created By :{" "}
+                          <span className="break-words flex items-center gap-2 max-w-[200px]">
+                            <ProfileImage
+                              imgSrc={selectedGroupChatData?.createdBy.avatar}
+                            />
+                            {selectedGroupChatData?.createdBy.name}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="createdAt mt-5">
+                        <div className="flex gap-4 items-center ">
+                          Created At :{" "}
+                          <span className="text-sm break-words sm:max-w-[250px] max-w-[150px]">
+                            {" "}
+                            {date.toString()}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="membersList mt-5">
+                        <h5 className="font-normal text-lg"> Group Members :</h5>
+                        <div className="listContainer">
+                          <ul>
+                            {
+                              selectedGroupChatData?.groupMembers.length > 0 ?
+                              <>
+                                {
+                                selectedGroupChatData?.groupMembers.map((member,idx)=>{
+                                  return (
+                                    <li key={idx}> 
+                                      <div className=" flex items-center gap-3 mt-4">
+                                        <ProfileImage
+                                          imgSrc={member?.avatar}
+                                        />
+                                          <span>
+                                            {member?.name}
+                                          </span>
+                                      </div>
+                                    </li>
+                                  )
+                                })
+                                
+                                }
+                              </> : ""
+                            }
+                          </ul>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                
               </div>
             </div>
           </div>

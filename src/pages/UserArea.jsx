@@ -146,7 +146,7 @@ const UserArea = () => {
               </div>
             </div>
             <Modal open={openModal} onClose={() => setOpenModal(false)} />
-            <InfoModal open={viewInfo} onClose={() => setViewInfo(false)} />
+            <InfoModal open={viewInfo} from={"header"} onClose={() => setViewInfo(false)} />
           </div>
         </>
       ) : (

@@ -147,13 +147,13 @@ const GroupChatSelected = () => {
           </section>
 
           {/* Send Message Section */}
-          <section className="fixed bottom-0 w-[-webkit-fill-available] p-3 border-t z-50">
+          <section className="fixed bottom-0 w-[-webkit-fill-available] p-3 border-t !z-[100] ">
             <div
               className="messageInputAndSend 
              w-[-webkit-fill-available]
           "
             >
-              <form className="flex justify-between items-center w-[80%] mx-auto">
+              <form className="flex justify-between items-center w-[80%] mx-auto ">
                 <div className="w-[80%] mx-auto">
                   <Controller
                     name="message"
