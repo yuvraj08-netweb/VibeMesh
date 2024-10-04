@@ -19,13 +19,13 @@ const GroupCard = ({ groupInfo, className }) => {
       doc(db, "groupChats", groupInfo.groupId),
       (res) => {
         setFullGroupInfo(res.data());
-      }
+      },
     );
-
+    
     return () => {
       unsub();
     };
-  }, [groupInfo.groupId, dispatch]);
+  }, [groupInfo.groupId]);
 
   return (
     <>

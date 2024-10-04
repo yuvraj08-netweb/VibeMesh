@@ -30,9 +30,9 @@ const UserCard = ({ func, user, from = "" }) => {
 
   const handleAddMember = () => {
     const userData = {
-      userId: user.id,
-      userName: user.fullName,
-      userAvatar: user.avatar,
+      id: user.id,
+      name: user.fullName,
+      avatar: user.avatar,
     };
 
     if (memberAdded) {

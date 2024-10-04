@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import ProfileImage from "../../Common/ProfileImage";
 
-const GroupInfoModal = ({ open, onClose}) => {
+const GroupInfoModal = ({ open, onClose }) => {
   const { selectedGroupChatData } = useSelector((state) => state.user);
 
   const modalRef = useRef(null);
@@ -28,8 +28,7 @@ const GroupInfoModal = ({ open, onClose}) => {
 
   return (
     <>
-      {open ?
-    (
+      {open ? (
         <>
           <div
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 !z-[10000] outline-none focus:outline-none text-[black]"
@@ -52,7 +51,7 @@ const GroupInfoModal = ({ open, onClose}) => {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="bodyContent w-full h-[500px] overflow-y-auto !z-[1000]">
+                <div className="bodyContent w-full h-[450px] overflow-y-auto !z-[1000]">
                   <div className="profilePhotoContainer relative">
                     <div className="bgContainer min-h-[150px]  mx-auto"></div>
                     <div className="imgContainer w-[200px] mx-auto  -mt-[90px]">
@@ -92,31 +91,36 @@ const GroupInfoModal = ({ open, onClose}) => {
                         </div>
                       </div>
                       <div className="membersList mt-5">
-                        <h5 className="font-normal text-lg"> Group Members :</h5>
+                        <h5 className="font-normal text-lg">
+                          {" "}
+                          Group Members :
+                        </h5>
+                        {console.log(
+                          selectedGroupChatData,
+                          "selectedGroupChatData"
+                        )}
                         <div className="listContainer">
                           <ul>
-                            {
-                              selectedGroupChatData?.groupMembers.length > 0 ?
+                            {selectedGroupChatData?.groupMembers.length > 0 ? (
                               <>
-                                {
-                                selectedGroupChatData?.groupMembers.map((member,idx)=>{
-                                  return (
-                                    <li key={idx}> 
-                                      <div className=" flex items-center gap-3 mt-4">
-                                        <ProfileImage
-                                          imgSrc={member?.avatar}
-                                        />
-                                          <span>
-                                            {member?.name}
-                                          </span>
-                                      </div>
-                                    </li>
-                                  )
-                                })
-                                
-                                }
-                              </> : ""
-                            }
+                                {selectedGroupChatData?.groupMembers.map(
+                                  (member, idx) => {
+                                    return (
+                                      <li key={idx}>
+                                        <div className=" flex items-center gap-3 mt-4">
+                                          <ProfileImage
+                                            imgSrc={member?.avatar}
+                                          />
+                                          <span>{member?.name}</span>
+                                        </div>
+                                      </li>
+                                    );
+                                  }
+                                )}
+                              </>
+                            ) : (
+                              ""
+                            )}
                           </ul>
                         </div>
                       </div>

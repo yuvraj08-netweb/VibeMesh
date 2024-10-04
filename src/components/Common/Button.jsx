@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
-const Button = ({ btnText, btnFun, path, scrollTo, className = "" }) => {
+const Button = ({ btnText, btnFun, path, scrollTo, className = "", disabled = false }) => {
   const handleClick = () => {
     const element = document.getElementById(scrollTo);
     if (element) {
@@ -14,6 +14,7 @@ const Button = ({ btnText, btnFun, path, scrollTo, className = "" }) => {
       <button
         onClick={btnFun ? btnFun : handleClick}
         className={`${className} px-4 py-2 border rounded-lg  text-lightPurple font-semibold`}
+        disabled={disabled}
       >
         {btnText}
       </button>

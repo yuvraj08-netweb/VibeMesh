@@ -8,7 +8,7 @@ import { setUserChats,setUserGroups } from "../../reducers/userSlice";
 
 const Tabs = () => {
   const [openTab, setOpenTab] = useState("chat");
-  const {userDetails} = useSelector(state=>state.user)
+  const {userDetails,} = useSelector(state=>state.user)
   const[chats,setChats] = useState([])
   const [groups,setGroups] = useState([])
   const dispatch = useDispatch();

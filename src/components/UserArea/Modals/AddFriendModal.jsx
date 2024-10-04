@@ -13,9 +13,9 @@ const Modal = ({ open, onClose }) => {
   const [createGroup, setCreateGroup] = useState(false);
   const [gName, setGName] = useState("NoName");
   const [img, setImg] = useState();
-  const { allUsers, userDetails, userChats, groupMembers,groupChats } = useSelector(
-    (state) => state.user
-  );
+  const [loading, setLoading] = useState(false);
+  const { allUsers, userDetails, userChats, groupMembers, groupChats } =
+    useSelector((state) => state.user);
   const dispatch = useDispatch();
   const userFiltered = allUsers?.filter((user) => userDetails.id !== user.id);
 
@@ -56,15 +56,16 @@ const Modal = ({ open, onClose }) => {
   };
 
   const handleCreateGroup = async () => {
+    setLoading(true);
     const userPersonalData = {
       id: userDetails.id,
       name: userDetails.fullName,
       avatar: userDetails.avatar,
-    }
-    
+    };
+
     // Add current user to group members locally
-  const updatedGroupMembers = [userPersonalData, ...groupMembers];
-    
+    const updatedGroupMembers = [userPersonalData, ...groupMembers];
+
     const imgUrl =
       (await Upload(img)) ||
       "https://png.pngtree.com/png-vector/20220623/ourmid/pngtree-business-working-team-people-approach-under-building-concourse-windows-png-image_5181530.png";
@@ -83,11 +84,15 @@ const Modal = ({ open, onClose }) => {
     dispatch(generateGroup({ groupInfo, userDetails }))
       .unwrap()
       .then(() => {
+        setLoading(false);
         onClose();
         toast.success("Group Created Successfully !");
+      })
+      .catch(() => {
+        setLoading(false);
       });
   };
-  
+
   return (
     <>
       {open ? (
@@ -195,12 +200,19 @@ const Modal = ({ open, onClose }) => {
                               <Button
                                 btnText={
                                   <>
-                                    Create &nbsp;
-                                    <i className="fa-solid fa-arrow-right-to-bracket"></i>
+                                    {loading ? (
+                                      "loading..."
+                                    ) : (
+                                      <>
+                                        Create &nbsp;
+                                        <i className="fa-solid fa-arrow-right-to-bracket"></i>
+                                      </>
+                                    )}
                                   </>
                                 }
                                 className="bg-greyPurple !text-[#fff] border-none mt-5"
                                 btnFun={handleCreateGroup}
+                                disabled={loading ? true : false}
                               />
                             </div>
                           </div>
@@ -257,19 +269,19 @@ const Modal = ({ open, onClose }) => {
                                     />
                                   </div>
 
-                                  {
-                                   
-                                    groupChats.length>0 ? (
-                                      groupChats.map((group ,index)=>{
-                                        return <ModalGroupCard groupInfo={group}
-                                        func = {onClose}
-                                        key={index}
+                                  {groupChats.length > 0 ? (
+                                    groupChats.map((group, index) => {
+                                      return (
+                                        <ModalGroupCard
+                                          groupInfo={group}
+                                          func={onClose}
+                                          key={index}
                                         />
-                                      })
-                                    ) : (
-                                      <p>No Groups To Show</p>
-                                    )
-                                  }
+                                      );
+                                    })
+                                  ) : (
+                                    <p>No Groups To Show</p>
+                                  )}
                                 </div>
                               </div>
                             </div>

@@ -10,9 +10,10 @@ import { useEffect, useState } from "react";
 import Modal from "../components/UserArea/Modals/AddFriendModal";
 import InfoModal from "../components/UserArea/Modals/UserInfoModal";
 import GroupChatSelected from "../components/UserArea/Chats/GroupChatSelected";
+import SearchBar from "../components/UserArea/SearchBar";
 
 const UserArea = () => {
-  const { userDetails, loading, selectedChat } = useSelector(
+  const { userDetails, loading, selectedChat,userChats } = useSelector(
     (state) => state.user
   );
   const [openModal, setOpenModal] = useState(false);
@@ -103,21 +104,10 @@ const UserArea = () => {
                     </div>
                   </div>
                   <div className="searchBar w-full flex border-b-2 p-3">
-                    <input
-                      type="search"
-                      className="rounded border px-3 py-[0.25rem] text-base font-normal leading-[1.6]"
-                      placeholder="Search"
-                      aria-label="Search"
-                    />
-
-                    <Button
-                      btnText={
-                        <>
-                          <i className="fa fa-search"></i>
-                        </>
-                      }
-                      className="!text-[#fff] border-none !pl-3 !pr-1"
-                    />
+                   <SearchBar
+                    userChats={userChats}
+                    userDetails={userDetails}
+                   />
                   </div>
                   {/* For Switching Between One to One and Group Chat */}
                   <div className="tabs">
