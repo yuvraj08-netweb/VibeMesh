@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useDispatch } from "react-redux";
-import { setSelectedChat } from "../../../reducers/userSlice";
+import { setSelectedChat, setSelectedGroupChatData } from "../../../reducers/userSlice";
 import ProfileImage from "../../Common/ProfileImage";
 import { useEffect, useState } from "react";
 import {doc, onSnapshot } from "firebase/firestore";
@@ -10,16 +10,16 @@ import { db } from "../../../firebase/config";
 const GroupCard = ({ groupInfo, className }) => {
   const [fullGroupInfo,setFullGroupInfo] = useState();
   const dispatch = useDispatch();
-  console.log(fullGroupInfo,"fullGroupInfo");
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "groupChats", groupInfo.groupId), (res) => {
       setFullGroupInfo(res.data());
+      dispatch(setSelectedGroupChatData(res.data()))
     });
 
     return () => {
       unsub();
     };
-  }, [groupInfo.groupId]);
+  }, [groupInfo.groupId,dispatch]);
   return (
     <>
       <div

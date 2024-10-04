@@ -182,32 +182,29 @@ export const addUserToGroup = createAsyncThunk(
   async ({ groupInfo, userDetails, userGroups }, thunkAPI) => {
     try {
       console.log(groupInfo, "groupInfo");
-      console.log(userDetails, "userDetails");
+      console.log(userDetails.id, "userDetails");
       console.log(userGroups, "userGroups");
 
       const groupChatsRef = collection(db, "groupChats");
-      const userGroupsRef = collection(db, "UsersChat");
+      const userGroupsRef = doc(db, "UsersChat",userDetails.id);
 
-      // // Update the friends array using arrayUnion
-      // await updateDoc(doc(groupChatsRef, groupInfo.aboutGroup.groupId), {
-      //   "aboutGroup.groupMembers": arrayUnion({
-      //     userId: userDetails.id,
-      //     userName: userDetails.fullName,
-      //     userAvatar: userDetails.avatar,
-      //   }),
-      // });
-
-      await updateDoc(doc(userGroupsRef, userDetails.id), {
-        groups: arrayUnion({
-          groupId: groupInfo.id,
-          groupName: groupInfo.aboutGroup.groupName,
-          groupAvatar: groupInfo.aboutGroup.groupAvatar,
-          lastMessage: groupInfo.aboutGroup.lastMessage,
-          groupMembers: groupInfo.aboutGroup.members,
-          createdBy: groupInfo.createdBy,
-          updatedAt: Date.now(),
+      // Update the friends array using arrayUnion
+      await updateDoc(doc(groupChatsRef, groupInfo.groupId), {
+        groupMembers: arrayUnion({
+          id: userDetails.id,
+          name: userDetails.fullName,
+          avatar: userDetails.avatar,
         }),
       });
+
+      await updateDoc(userGroupsRef, {
+        groups: arrayUnion({
+          groupId: groupInfo.groupId,
+          groupName: groupInfo.groupName,
+          groupAvatar: groupInfo.groupAvatar,
+        }),
+      });
+
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -221,7 +218,7 @@ const userSlice = createSlice({
     isUser: false,
     userDetails: null,
     selectedChat: null,
-    selectedGroupChat: null,
+    selectedGroupChatData: null,
     allUsers: null,
     userLoading: false,
     groupMembers: [],
@@ -244,8 +241,8 @@ const userSlice = createSlice({
         return member?.userId !== action.payload;
       });
     },
-    setSelectedGroupChat: (state, action) => {
-      state.selectedGroupChat = action.payload;
+    setSelectedGroupChatData: (state, action) => {
+      state.selectedGroupChatData = action.payload;
     },
     setUserGroups: (state, action) => {
       state.userGroups = action.payload;
@@ -300,6 +297,7 @@ export const {
   addGroupMembers,
   deleteGroupMember,
   setUserGroups,
+  setSelectedGroupChatData,
 } = userSlice.actions;
 
 export default userSlice.reducer;

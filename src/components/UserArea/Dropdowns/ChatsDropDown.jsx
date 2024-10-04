@@ -43,7 +43,7 @@ const handleClearChat = () =>{
       />
 
       {isOpen && (
-        <div className="absolute text-sm -left-36 w-[150px] mt-2 bg-[white] rounded shadow-lg text-[black]">
+        <div className="absolute text-sm -left-36 min-w-[150px] mt-2 bg-[white] rounded shadow-lg text-[black]">
           <ul className="py-2">
             <li>
             <Button
@@ -61,8 +61,8 @@ const handleClearChat = () =>{
                 <Button
                     btnText={
                         <>
-                        <i className='fa fa-broom'></i>
-                        <span className='ml-3'>Clear Chat</span>
+                        <i className='fa fa-user-minus'></i>
+                        <span className='ml-3'>Remove User</span>
                         </>
                     }
                     className='border-none'

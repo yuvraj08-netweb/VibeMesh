@@ -24,8 +24,6 @@ const Modal = ({ open, onClose }) => {
       ? userFiltered?.filter((user) => {
           // Create a Set of friend IDs for faster lookup
           const friendIds = new Set(userChats.map((friend) => friend.user.id));
-          //           console.log(friendIds,"friendIds");
-          // console.log(!friendIds.has(user.id),"!friendIds.has(user.id)");
 
           return !friendIds.has(user.id); // Exclude users who are friends
         })
@@ -51,11 +49,6 @@ const Modal = ({ open, onClose }) => {
     };
   }, [open, onClose]);
 
-  // useEffect(async () => {
-  //   const res = await getDoc(doc(db, "UsersChat", userDetails.id));
-  //   setCurrentUserChats(res.data());
-  // },[currentUserChats])
-  // console.log(currentUserChats, "currentUserChats");
   const [openTab, setOpenTab] = useState("chat");
 
   const switchTab = (tab) => {
@@ -269,6 +262,7 @@ const Modal = ({ open, onClose }) => {
                                     groupChats.length>0 ? (
                                       groupChats.map((group ,index)=>{
                                         return <ModalGroupCard groupInfo={group}
+                                        func = {onClose}
                                         key={index}
                                         />
                                       })

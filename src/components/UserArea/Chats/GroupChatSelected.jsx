@@ -1,8 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedChat } from "../../../reducers/userSlice";
-import Button from "../../Common/Button";
-import Message from "../Messages/Message";
 import { useEffect, useRef, useState } from "react";
 import {
   arrayUnion,
@@ -11,13 +8,17 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../../firebase/config";
-import NoMessage from "../Messages/NoMessage";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { setSelectedChat } from "../../../reducers/userSlice";
+import Button from "../../Common/Button";
+import GroupInfoModal from "../Modals/GroupInfoModal"
+import { db } from "../../../firebase/config";
+import NoMessage from "../Messages/NoMessage";
 import GroupMessage from "../Messages/GroupMessage";
 import ProfileImage from "../../Common/ProfileImage";
+import GroupsDropDown from "../Dropdowns/GroupsDropDown";
 
 const GroupChatSelected = () => {
     // Schema for message validation
@@ -38,6 +39,7 @@ const GroupChatSelected = () => {
       message: "", 
     },
   });
+
 
   const [chat, setChat] = useState([]);
 
@@ -121,14 +123,9 @@ const GroupChatSelected = () => {
                 <h2 className="text-xl">{selectedChat.groupName}</h2>
               </div>
             </div>
-            <Button
-              btnText={
-                <>
-                  <i className="fa-solid fa-ellipsis-vertical"></i>
-                </>
-              }
-              className="border-none text-3xl !py-0"
-            />
+            <div className="Button">
+              <GroupsDropDown/>
+            </div>
           </section>
 
           {/* Chat Area */}
