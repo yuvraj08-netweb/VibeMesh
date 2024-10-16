@@ -185,7 +185,7 @@ const SignUpForm = () => {
       </div>
       <p className="text-[#949393d7] mb-4 sm:hidden block">Already have a account ? <Link to="/login"><span className="text-lightPurple font-bold"> Login Here </span></Link> </p>
 
-      <div className="formElement max-w-[100px]">
+      <div className="formElement max-w-[80px]">
         {loading ? (
           <div className="loading-wave">
             <div className="loading-bar" />

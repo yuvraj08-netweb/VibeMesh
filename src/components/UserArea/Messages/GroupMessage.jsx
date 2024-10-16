@@ -26,7 +26,7 @@ const GroupMessage = ({ message }) => {
         />
         <div>
           {/* Card */}
-          <div className="bg-white relative border border-gray-200 rounded-2xl px-4 -z-10 !py-2 max-w-[270px] lg:max-w-[400px]">
+          <div className="relative border border-gray-200 rounded-2xl px-4 -z-10 !py-2 max-w-[270px] lg:max-w-[400px]">
             <span
               className={` text-[11px] text-[#ffffff96]
            ${

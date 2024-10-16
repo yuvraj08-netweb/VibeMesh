@@ -64,16 +64,16 @@ textarea {
 
 /* From Uiverse.io by mrpumps31232 */
 .loading-wave {
-  width: 300px;
-  height: 100px;
+  width: 200px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
 }
 
 .loading-bar {
-  width: 20px;
-  height: 10px;
+  width: 15px;
+  height: 8px;
   margin: 0 5px;
   background-color: #3498db;
   border-radius: 5px;
@@ -98,7 +98,7 @@ textarea {
   }
 
   50% {
-    height: 50px;
+    height: 40px;
   }
 
   100% {
