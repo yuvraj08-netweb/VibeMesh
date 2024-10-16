@@ -126,7 +126,7 @@ const ChatSelected = () => {
 
         {/* Chat Area */}
         <section className="chatArea pt-[65px]">
-          <div className="messagesContainer max-h-[66vh] overflow-y-scroll p-5 ">
+          <div className="messagesContainer max-h-[70vh] overflow-y-scroll p-5 ">
             <ul className="">
               <li className="">
                 {chat?.messages?.length > 0 ? (

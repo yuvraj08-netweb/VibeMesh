@@ -99,7 +99,7 @@ const GroupChatSelected = () => {
   return (
     <div>
       <>
-        <div className="min-h-[90vh]" data-aos="zoom-in-up">
+        <div className="min-h-[90vh] -z-10" data-aos="zoom-in-up">
           {/* Header Setion */}
           <section className=" fixed top-0 header w-[-webkit-fill-available] flex justify-between items-center border-b p-3 ">
             <div className="infoContainer flex items-center">

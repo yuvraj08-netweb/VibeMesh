@@ -105,12 +105,12 @@ const Tabs = () => {
           </ul>
 
           {/* Actual Content To Show In The Tabs */}
-          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-            <div className="px-4 py-5 flex-auto">
-              <div className="tab-content tab-space">
+          <div className="relative flex flex-col min-w-0 break-words w-full  shadow-lg rounded">
+            <div className="px-4 py-3 flex-auto">
+              <div className="">
                 {/* Content For Single Chat */}
                 <div
-                  className={openTab === "chat" ? "block" : "hidden"}
+                  className={`max-h-[56vh] overflow-y-auto ${openTab === "chat" ? "block" : "hidden"}`}
                   id="singleChat"
                 >
                   {/* display all available chats */}
@@ -136,7 +136,7 @@ const Tabs = () => {
                 </div>
                 {/* Content For The Group Chat */}
                 <div
-                  className={openTab === "group" ? "block" : "hidden"}
+                  className={`max-h-[56vh] overflow-y-auto  ${openTab === "group" ? "block" : "hidden"}`}
                   id="groupChat"
                 >
                    {
