@@ -36,7 +36,7 @@ textarea {
   margin-bottom: 20px;
 }
 .Login {
-  background-image: url("../public/assets/chat-bg.jpg");
+  background-image: url("/assets/chat-bg.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
