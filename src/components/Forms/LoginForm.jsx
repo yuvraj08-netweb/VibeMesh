@@ -9,10 +9,11 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUserData } from "../../reducers/userSlice";
+import { generateToken } from "../../firebase/notifications";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -44,13 +45,18 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const submitForm = async (data) => {
     try {
-      await signInWithEmailAndPassword(auth, data.emailId, data.password).then(
+        await signInWithEmailAndPassword(auth, data.emailId, data.password).then(
         () => {
           dispatch(fetchUserData());
           reset();
           navigate("/userArea");
+          
+          if(Notification.permission === "granted"){
+            generateToken();
+          }
         }
       );
     } catch (error) {
@@ -59,7 +65,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="max-w-[450px] loginForm">
+    <form className="md:max-w-[450px] max-w-[85%] loginForm">
       <div className="formElement">
         <Controller
           name="emailId"

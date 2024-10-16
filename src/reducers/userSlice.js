@@ -244,6 +244,7 @@ const userSlice = createSlice({
     setUserGroups: (state, action) => {
       state.userGroups = action.payload;
     },
+  
   },
   extraReducers: (builder) => {
     builder
@@ -255,10 +256,9 @@ const userSlice = createSlice({
         state.userDetails = action.payload;
         state.isUser = true;
       })
-      .addCase(fetchUserData.rejected, (state, action) => {
+      .addCase(fetchUserData.rejected, (state) => {
         state.loading = false;
         state.isUser = false;
-        console.error(action.payload);
       })
       .addCase(logOutUser.fulfilled, (state) => {
         state.isUser = false;
