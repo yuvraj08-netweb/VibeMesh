@@ -56,6 +56,7 @@ const InfoModal = ({ open, onClose ,from}) => {
                         src={userDetails.avatar}
                         alt="profilePicture"
                         className="rounded-xl"
+                        draggable="false"
                       />
                     </div>
                   </div>
@@ -118,6 +119,7 @@ const InfoModal = ({ open, onClose ,from}) => {
                         src={selectedChat.user.avatar}
                         alt="profilePicture"
                         className="rounded-xl"
+                        draggable="false"
                       />
                     </div>
                   </div>

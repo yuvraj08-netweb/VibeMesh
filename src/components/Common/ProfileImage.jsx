@@ -7,6 +7,7 @@ const ProfileImage = ({imgSrc,className=""}) => {
         src={imgSrc} 
         alt="profilePhoto"
         className={`w-[40px] h-[40px] rounded-[100%] object-cover ${className}`}
+        draggable="false"
         />
     </>
   )

@@ -23,6 +23,7 @@ const GroupMessage = ({ message }) => {
               : message.from?.senderAvatar
           }
           alt="Avatar"
+          draggable="false"
         />
         <div>
           {/* Card */}

@@ -59,6 +59,7 @@ const GroupInfoModal = ({ open, onClose }) => {
                         src={selectedGroupChatData?.groupAvatar}
                         alt="profilePicture"
                         className="rounded-xl"
+                        draggable="false"
                       />
                     </div>
                   </div>

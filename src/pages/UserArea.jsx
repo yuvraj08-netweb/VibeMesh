@@ -71,6 +71,7 @@ const UserArea = () => {
                           src={userDetails.avatar}
                           alt="UserAvatar"
                           className="w-[50px] h-[50px]  rounded-[100%] border"
+                          draggable="false"
                         />
                       </div>
                       <div className="userName ml-3 text-lg max-w-max">

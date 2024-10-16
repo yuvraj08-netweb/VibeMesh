@@ -116,6 +116,7 @@ const SearchBar = ({ userChats, userDetails }) => {
                     src={user.avatar}
                     alt={user.fullName}
                     className="w-8 h-8 rounded-full mr-2"
+                    draggable = "false"
                   />
                   <span>{user.fullName}</span>
                 </div>
