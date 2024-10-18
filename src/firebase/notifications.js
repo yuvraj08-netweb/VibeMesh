@@ -15,7 +15,7 @@ export const generateToken = async (userId) => {
   try {
     const token = await getToken(messaging, {
       vapidKey:
-        "BMAxrzuChYr-iTnm-wY-x_u_wLlrQbuAI5rAwMVfF1YydAURvL3vpRWQb-eRCzcJJ9RtJCv3okP44v6yYzTNpQo",
+        "BDtLUw5583Y5Mnhgs9ZbohBxNA1HMY2EjYoqwkNzKZqUdbFuflUfOwoNg12HePZfNx_2eF-fmcdjiqia70WtbZQ",
     });
     if (token) {
       console.log("FCM Token:", token);
