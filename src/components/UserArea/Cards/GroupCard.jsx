@@ -51,7 +51,7 @@ const GroupCard = ({ groupInfo, className }) => {
               <p>
                 {fullGroupInfo?.messages[fullGroupInfo?.messages?.length - 1]
                   ?.from?.senderName + "~"}{" "}
-                {fullGroupInfo?.lastMessage || ""}
+                {fullGroupInfo?.lastMessage?.messageText || ""}
               </p>
             ) : (
               ""

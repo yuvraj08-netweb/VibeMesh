@@ -50,13 +50,14 @@ const LoginForm = () => {
     try {
         await signInWithEmailAndPassword(auth, data.emailId, data.password).then(
         () => {
-          dispatch(fetchUserData());
+          dispatch(fetchUserData()).unwrap().then(async (data)=> {
+            const userID = data.id;
+            if(Notification.permission === "granted"){
+              generateToken(userID);
+            }
+          })
           reset();
           navigate("/userArea");
-          
-          if(Notification.permission === "granted"){
-            generateToken();
-          }
         }
       );
     } catch (error) {

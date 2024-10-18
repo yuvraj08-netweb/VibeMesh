@@ -11,11 +11,14 @@ import Modal from "../components/UserArea/Modals/AddFriendModal";
 import InfoModal from "../components/UserArea/Modals/UserInfoModal";
 import GroupChatSelected from "../components/UserArea/Chats/GroupChatSelected";
 import SearchBar from "../components/UserArea/SearchBar";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 const UserArea = () => {
-  const { userDetails, loading, selectedChat,userChats } = useSelector(
+  const { userDetails, loading, selectedChat, userChats } = useSelector(
     (state) => state.user
   );
+
   const [openModal, setOpenModal] = useState(false);
   const [viewInfo, setViewInfo] = useState(false);
   const dispatch = useDispatch();
@@ -33,7 +36,13 @@ const UserArea = () => {
   const handleLogOut = () => {
     dispatch(logOutUser())
       .unwrap()
-      .then(() => {
+      .then(async () => {
+
+        const userIdRef = doc(db, "Users", userDetails.id);
+        await updateDoc(userIdRef, {
+          FCM_Token: "",
+        });
+
         navigate("/login");
       });
   };
@@ -105,10 +114,10 @@ const UserArea = () => {
                     </div>
                   </div>
                   <div className="searchBar w-full flex border-b-2 p-3">
-                   <SearchBar
-                    userChats={userChats}
-                    userDetails={userDetails}
-                   />
+                    <SearchBar
+                      userChats={userChats}
+                      userDetails={userDetails}
+                    />
                   </div>
                   {/* For Switching Between One to One and Group Chat */}
                   <div className="tabs">
@@ -137,7 +146,11 @@ const UserArea = () => {
               </div>
             </div>
             <Modal open={openModal} onClose={() => setOpenModal(false)} />
-            <InfoModal open={viewInfo} from={"header"} onClose={() => setViewInfo(false)} />
+            <InfoModal
+              open={viewInfo}
+              from={"header"}
+              onClose={() => setViewInfo(false)}
+            />
           </div>
         </>
       ) : (
