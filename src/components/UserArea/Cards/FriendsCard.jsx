@@ -41,7 +41,7 @@ const FriendsCard = ({friend}) => {
             <h4 className="text-xl font-normal">{friendData.fullName}</h4>
           </div>
           <div className="lastMessage text-xs text-[#ffffff81]">
-            <p>{chat?.lastMessage || ``}</p>
+            <p>{chat?.lastMessage?.messageText || ``}</p>
           </div>
         </div>
       </div>

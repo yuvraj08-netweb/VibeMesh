@@ -50,7 +50,9 @@ const ChatSelected = () => {
     const unsub = onSnapshot(doc(db, "chats", selectedChat.chatId), (res) => {
       setChat(res.data());
       // Work Here
-
+       console.log(res.data());
+       
+       
     });
 
     return () => {
@@ -87,8 +89,15 @@ const ChatSelected = () => {
     });
 
     await updateDoc(newChatDocRef, {
-      lastMessage: data.message,
+      lastMessage: {
+        messageId: userDetails.id + "_" + selectedUser.id,
+        messageText: data.message,
+      },
     });
+
+    new Notification('New Message', {
+      body: data.message,
+  });
   };
 
   return (
