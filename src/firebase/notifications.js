@@ -1,5 +1,5 @@
 import { messaging } from "./config";
-import { getToken, onMessage } from "firebase/messaging";
+import { getToken } from "firebase/messaging";
 
 export const requestNotificationPermission = async () => {
   if (Notification.permission === "default") {
@@ -11,27 +11,22 @@ export const requestNotificationPermission = async () => {
   }
 };
 
-export const generateToken = async (userId) => {
+export const generateToken = async () => {
   try {
+    const registration = await navigator.serviceWorker.ready;
     const token = await getToken(messaging, {
-      vapidKey:
-        "BDtLUw5583Y5Mnhgs9ZbohBxNA1HMY2EjYoqwkNzKZqUdbFuflUfOwoNg12HePZfNx_2eF-fmcdjiqia70WtbZQ",
+      vapidKey: 'BDtLUw5583Y5Mnhgs9ZbohBxNA1HMY2EjYoqwkNzKZqUdbFuflUfOwoNg12HePZfNx_2eF-fmcdjiqia70WtbZQ',
+      serviceWorkerRegistration: registration,
     });
+
     if (token) {
-      console.log("FCM Token:", token);
+      console.log('FCM Token:', token);
+      localStorage.setItem("FCM-TOKEN",token)
     } else {
-      console.error("No token received");
-      console.log(userId);
+      console.error('No token received');
     }
   } catch (error) {
-    console.error("Error fetching token:", error);
+    console.error('Error fetching token:', error);
   }
 };
 
-export const listenToMessages = () => {
-  onMessage(messaging, (payload) => {
-    console.log("Foreground message received:", payload);
-    const { title, body } = payload.notification;
-    new Notification(title, { body });
-  });
-};

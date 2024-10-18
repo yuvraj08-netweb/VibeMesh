@@ -5,8 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import initializeAOS from "./animations/aos";
 import { fetchUserData } from "./reducers/userSlice";
 import {
-  requestNotificationPermission,
-  listenToMessages,
+  requestNotificationPermission
 } from "./firebase/notifications";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -16,6 +15,8 @@ import NotFound from "./pages/NotFound";
 import PrivateLayout from "./layouts/PrivateLayout";
 import PublicLayout from "./layouts/PublicLayout";
 import "react-toastify/dist/ReactToastify.css";
+import { onMessage } from "firebase/messaging";
+import { messaging } from "./firebase/config";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function App() {
     // Register the service worker with ES module type
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register("/firebase-messaging-sw.js", { type: "module" }) // Register with module type
+        .register("/firebase-messaging-sw.js") // Register with module type
         .then((registration) => {
           console.log(
             "Service Worker registered with scope:",
@@ -37,21 +38,24 @@ function App() {
     }
   }, []);
 
+  const initNotifications = async () => {
+    const permission = await requestNotificationPermission();
+    if (permission === "granted") {
+      toast.success("You can now receive notifications!");
+    } else if (permission === "denied") {
+      toast.error("Enable notifications to receive messages.");
+    }
+  };
+
   useEffect(() => {
     initializeAOS();
     dispatch(fetchUserData());
-
-    const initNotifications = async () => {
-      const permission = await requestNotificationPermission();
-      if (permission === "granted") {
-        listenToMessages();
-        toast.success("You can now receive notifications!");
-      } else if (permission === "denied") {
-        toast.error("Enable notifications to receive messages.");
-      }
-    };
-
     initNotifications();
+    onMessage(messaging, (payload) => {
+      console.log("Foreground message received:", payload);
+      // const { title, body } = payload.notification;
+      // new Notification(title,{body});
+    });
   }, [dispatch]);
 
   return (

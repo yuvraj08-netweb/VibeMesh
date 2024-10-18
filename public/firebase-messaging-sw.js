@@ -1,6 +1,10 @@
-// Use ES modules syntax
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
-import { getMessaging, onBackgroundMessage } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-messaging-sw.js";
+/* eslint-disable no-undef */
+// Use importScripts to load Firebase libraries inside the service worker.
+console.log('Loading Firebase scripts...');
+importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-messaging-compat.js')
+console.log('Firebase messaging script loaded successfully.');
+
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,17 +18,13 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
 
 // Handle background notifications
-onBackgroundMessage(messaging, (payload) => {
+messaging.onBackgroundMessage((payload) => {
   console.log("[firebase-messaging-sw.js] Received background message:", payload);
 
   const { title, body } = payload.notification;
-  const notificationOptions = {
-    body
-  };
-
-  self.registration.showNotification(title, notificationOptions);
+  self.registration.showNotification(title, body);
 });
