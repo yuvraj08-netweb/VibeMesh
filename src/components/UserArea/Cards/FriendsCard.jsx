@@ -7,26 +7,27 @@ import ProfileImage from "../../Common/ProfileImage";
 
 /* eslint-disable react/prop-types */
 const FriendsCard = ({ friend }) => {
-  const { userDetails, selectedChat } = useSelector((state) => state.user);
+  const { userDetails } = useSelector((state) => state.user);
   const friendData = friend.user;
   const dispatch = useDispatch();
   const [chat, setChat] = useState();
-  const lastMessageTimestampRef = useRef(null); // Tracks latest message across renders
+  const lastMessageTimestampRef = useRef(null); // Tracks the latest message across renders
 
   // Retrieve the last processed message timestamp from localStorage
   const getStoredTimestamp = (chatId) => {
-    return localStorage.getItem(`lastMessageTimestamp_${chatId}`);
+    const timestamp = localStorage.getItem(`lastMessageTimestamp_${chatId}`);
+    return timestamp ? Number(timestamp) : null; // Ensure it's a number or null
   };
 
   // Store the new message timestamp in localStorage
   const storeTimestamp = (chatId, timestamp) => {
-    localStorage.setItem(`lastMessageTimestamp_${chatId}`, timestamp);
+    localStorage.setItem(`lastMessageTimestamp_${chatId}`, timestamp.toString()); // Store as a string
   };
 
   // Display a notification for new messages
   const showNotification = (message) => {
     const senderId = message.messageId.split("_")[0]; // Extract sender's ID
-    if (senderId !== userDetails.id && selectedChat === null) {
+    if (senderId !== userDetails.id) {
       new Notification("New Message", {
         body: `${friendData.fullName} ~ ${message.messageText}`,
       });
@@ -47,6 +48,7 @@ const FriendsCard = ({ friend }) => {
       // Ensure notification triggers only for new messages
       if (
         lastMessage &&
+        lastMessageTimestamp && // Ensure lastMessageTimestamp is valid
         (!storedTimestamp || lastMessageTimestamp > storedTimestamp) &&
         lastMessageTimestamp !== lastMessageTimestampRef.current
       ) {

@@ -117,9 +117,8 @@ export const generateGroup = createAsyncThunk(
       if (groupInfo) {
         const userChatsRef = collection(db, "UsersChat");
         const groupsRef = collection(db, "groupChats");
-
         const newGroupDocRef = doc(groupsRef);
-
+        
         await setDoc(newGroupDocRef, {
           groupId: newGroupDocRef.id,
           groupName: groupInfo.groupName,
@@ -130,7 +129,7 @@ export const generateGroup = createAsyncThunk(
           updatedAt: Date.now(),
           messages: [],
         });
-
+        
         await updateDoc(doc(userChatsRef, userDetails.id), {
           groups: arrayUnion({
             groupId: newGroupDocRef.id,
@@ -140,15 +139,20 @@ export const generateGroup = createAsyncThunk(
         });
 
         if (groupInfo.members.length > 0) {
-          groupInfo.members.map(async (member) => {
-            await updateDoc(doc(userChatsRef, member.userId), {
-              groups: arrayUnion({
-                groupId: newGroupDocRef.id,
-                groupName: groupInfo.groupName,
-                groupAvatar: groupInfo.groupAvatar,
-              }),
-            });
-          });
+          await Promise.all(
+            groupInfo.members.map(async (member) => {
+              if (!member.id) {
+                throw new Error("Member User ID is required");
+              }
+              await updateDoc(doc(userChatsRef, member.id), {
+                groups: arrayUnion({
+                  groupId: newGroupDocRef.id,
+                  groupName: groupInfo.groupName,
+                  groupAvatar: groupInfo.groupAvatar,
+                }),
+              });
+            })
+          );
         }
       } else {
         throw new Error("NoGroupInfoFound");
