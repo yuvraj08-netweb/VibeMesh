@@ -28,7 +28,7 @@ const GroupMessage = ({ message }) => {
           {/* Card */}
           <div className="relative border border-gray-200 rounded-2xl px-4 -z-10 !py-2 max-w-[270px] lg:max-w-[400px]">
             <span
-              className={` text-[11px] text-[#ffffff96]
+              className={`w-[200px] text-[11px] text-[#ffffff96]
            ${
              message.from.senderId === userDetails?.id
                ? "hidden"

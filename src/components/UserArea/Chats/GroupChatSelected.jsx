@@ -86,7 +86,9 @@ const GroupChatSelected = () => {
     await updateDoc(newChatDocRef,{
       lastMessage : {
         messageId: userDetails.id + "_" + selectedChat.groupId,
+        senderName: userDetails.fullName,
         messageText: data.message,
+        timestamp: Date.now(),
       },
     })
   };
