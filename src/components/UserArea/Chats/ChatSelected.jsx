@@ -50,9 +50,6 @@ const ChatSelected = () => {
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "chats", selectedChat.chatId), (res) => {
       setChat(res.data());
-      // Work Here
-      //  console.log(res.data());
-       
     });
 
     return () => {

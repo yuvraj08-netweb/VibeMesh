@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { useSelector } from "react-redux";
+import { formatTimestamp } from "../../../utils";
 
 const GroupMessage = ({ message }) => {
   const { userDetails } = useSelector((state) => state.user);
@@ -10,8 +11,8 @@ const GroupMessage = ({ message }) => {
       <div
         className={
           message.from.senderId === userDetails?.id
-            ? "message  flex mb-5 items-center gap-3 flex-row-reverse"
-            : "message flex mb-8 items-center gap-3"
+            ? "message  flex mb-8 items-center gap-3 flex-row-reverse"
+            : "message flex mb-12 items-center gap-3"
         }
       >
         <img
@@ -39,6 +40,9 @@ const GroupMessage = ({ message }) => {
               {message.from.senderName}
             </span>
             {message?.messageText}
+            <span className={`sentAt -bottom-5 absolute z-10 text-[#ccc] text-[12px] ${message.from.senderId === userDetails?.id ? "right-0" :"left-0"}`}>
+              {formatTimestamp(message?.createdAt)}
+          </span>
           </div>
           {/* End Card */}
         </div>
