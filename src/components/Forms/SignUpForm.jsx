@@ -98,6 +98,7 @@ const SignUpForm = () => {
       navigate("/login");
     } catch (error) {
       toast.error(`Registration Failed Due To ${error.message}`);
+      setLoading(false);
     }
     reset();
   };

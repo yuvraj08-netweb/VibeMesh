@@ -46,12 +46,12 @@ const ChatSelected = () => {
 
   const selectedUser = selectedChat.user;
 
+
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "chats", selectedChat.chatId), (res) => {
       setChat(res.data());
       // Work Here
-       console.log(res.data());
-       
+      //  console.log(res.data());
        
     });
 
@@ -85,6 +85,8 @@ const ChatSelected = () => {
         messageSeen: false,
       }),
     }).then(() => {
+
+      
       reset();
     });
 
@@ -92,12 +94,9 @@ const ChatSelected = () => {
       lastMessage: {
         messageId: userDetails.id + "_" + selectedUser.id,
         messageText: data.message,
+        timestamp: Date.now(),
       },
     });
-
-    new Notification('New Message', {
-      body: data.message,
-  });
   };
 
   return (
