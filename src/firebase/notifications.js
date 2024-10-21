@@ -1,5 +1,5 @@
-import { doc, updateDoc } from "firebase/firestore";
-import { db, messaging } from "./config";
+
+import { messaging } from "./config";
 import { getToken } from "firebase/messaging";
 
 export const requestNotificationPermission = async () => {
@@ -12,7 +12,7 @@ export const requestNotificationPermission = async () => {
   }
 };
 
-export const generateToken = async (userID) => {
+export const generateToken = async () => {
   try {
     const registration = await navigator.serviceWorker.ready;
 
@@ -23,13 +23,6 @@ export const generateToken = async (userID) => {
     });
 
     if (token) {
-
-      const userIdRef = doc(db, "Users", userID);
-
-      await updateDoc(userIdRef, {
-        FCM_Token: token,
-      });  
-
       console.log("FCM Token:", token);
     } else {
       console.error("No token received");

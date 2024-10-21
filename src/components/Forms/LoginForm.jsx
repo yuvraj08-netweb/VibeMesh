@@ -50,10 +50,9 @@ const LoginForm = () => {
     try {
         await signInWithEmailAndPassword(auth, data.emailId, data.password).then(
         () => {
-          dispatch(fetchUserData()).unwrap().then(async (data)=> {
-            const userID = data.id;
+          dispatch(fetchUserData()).unwrap().then(async ()=> {
             if(Notification.permission === "granted"){
-              generateToken(userID);
+              generateToken();
             }
           })
           reset();
