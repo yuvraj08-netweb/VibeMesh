@@ -7,7 +7,7 @@ import ProfileImage from "../../Common/ProfileImage";
 
 /* eslint-disable react/prop-types */
 const FriendsCard = ({ friend }) => {
-  const { userDetails, selectedChat } = useSelector((state) => state.user);
+  const { userDetails } = useSelector((state) => state.user);
   const friendData = friend.user;
   const dispatch = useDispatch();
   const [chat, setChat] = useState();
@@ -26,7 +26,7 @@ const FriendsCard = ({ friend }) => {
   // Display a notification for new messages
   const showNotification = (message) => {
     const senderId = message.messageId.split("_")[0]; // Extract sender's ID
-    if (senderId !== userDetails.id && selectedChat === null) {
+    if (senderId !== userDetails.id) {
       new Notification("New Message", {
         body: `${friendData.fullName} ~ ${message.messageText}`,
       });
