@@ -58,9 +58,7 @@ const GroupCard = ({ groupInfo, className }) => {
         lastMessage &&
         (!storedTimestamp || lastMessageTimestamp > storedTimestamp) &&
         lastMessageTimestamp !== lastMessageTimestampRef.current
-      ) {
-        console.log("EnteredIF");
-        
+      ) {  
         showNotification(lastMessage); // Show notification
         storeTimestamp(groupInfo.groupId, lastMessageTimestamp); // Update localStorage
         lastMessageTimestampRef.current = lastMessageTimestamp; // Update ref for session

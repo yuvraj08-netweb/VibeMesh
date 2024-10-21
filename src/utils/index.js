@@ -19,13 +19,21 @@ export const formatTimestamp = (timestamp) => {
   const date = new Date(timestamp);
 
   // Get the hours and minutes
-  const hours = date.getHours();
+  let hours = date.getHours();
   const minutes = date.getMinutes();
+
+  // Determine AM or PM
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  // Convert to 12-hour format
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
 
   // Format the hours and minutes (add leading zero if needed)
   const formattedHours = hours.toString().padStart(2, '0');
   const formattedMinutes = minutes.toString().padStart(2, '0');
 
-  return `${formattedHours}:${formattedMinutes}`;
+  return `${formattedHours}:${formattedMinutes} ${ampm}`;
 }
+
 
