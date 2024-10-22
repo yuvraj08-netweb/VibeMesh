@@ -46,12 +46,13 @@ const UserArea = () => {
   const handleViewInfo = () => {
     setViewInfo(true);
   };
+  
   return (
     <div>
       {userDetails ? (
         <>
           <div className="userArea min-h-screen  w-full flex items-center text-[#fff]">
-            <div className="centerCard min-h-[90vh] w-[90%] m-auto">
+            <div className="centerCard min-h-[82vh] w-[90%] m-auto">
               <div className="innerContainer flex min-h-[inherit]">
                 {/* Left Side Area */}
                 <div

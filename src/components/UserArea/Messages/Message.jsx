@@ -47,7 +47,7 @@ const Message = ({ message }) => {
             {message?.messageText}
           </div>
           {/* End Card */}
-          <span className={`sentAt -bottom-5 absolute z-10 text-[#ccc] text-[12px] ${senderDetails?.id === userDetails?.id ? "right-0" :"left-0"}`}>
+          <span className={`sentAt min-w-max -bottom-5 absolute z-10 text-[#ccc] text-[12px] ${senderDetails?.id === userDetails?.id ? "right-0" :"left-0"}`}>
               {formatTimestamp(message?.createdAt)}
           </span>
         </div>

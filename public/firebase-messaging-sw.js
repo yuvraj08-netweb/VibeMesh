@@ -1,9 +1,7 @@
 /* eslint-disable no-undef */
 // Use importScripts to load Firebase libraries inside the service worker.
-console.log('Loading Firebase scripts...');
 importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-messaging-compat.js')
-console.log('Firebase messaging script loaded successfully.');
 
 
 // Firebase configuration

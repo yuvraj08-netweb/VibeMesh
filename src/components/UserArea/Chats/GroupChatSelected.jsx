@@ -104,9 +104,9 @@ const GroupChatSelected = () => {
   return (
     <div>
       <>
-        <div className="min-h-[90vh] -z-10" data-aos="zoom-in-up">
+        <div className="min-h-[70vh] max-h-[70vh] -z-10" data-aos="zoom-in-up">
           {/* Header Setion */}
-          <section className=" fixed top-0 header w-[-webkit-fill-available] flex justify-between items-center border-b p-3 ">
+          <section className=" top-0 header w-[-webkit-fill-available] flex justify-between items-center border-b p-3 ">
             <div className="infoContainer flex items-center">
               <Button
                 btnText={
@@ -133,8 +133,8 @@ const GroupChatSelected = () => {
           </section>
 
           {/* Chat Area */}
-          <section className="chatArea py-20">
-            <div className="messagesContainer max-h-[68vh] overflow-y-scroll p-5 ">
+          <section className="chatArea min-h-[62vh]">
+            <div className="messagesContainer max-h-[62vh] overflow-y-scroll p-5 ">
               <ul className="">
                 <li className="">
                   {chat?.messages?.length > 0 ? (
@@ -151,7 +151,7 @@ const GroupChatSelected = () => {
           </section>
 
           {/* Send Message Section */}
-          <section className="fixed bottom-0 w-[-webkit-fill-available] p-3 border-t !z-[100] ">
+          <section className="bottom-0 w-[-webkit-fill-available] p-3 border-t !z-[100] ">
             <div
               className="messageInputAndSend 
              w-[-webkit-fill-available]
