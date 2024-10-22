@@ -3,7 +3,7 @@ import Button from "../../Common/Button";
 import InfoModal from "../Modals/UserInfoModal";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../../firebase/config";
-import { doc, updateDoc, arrayRemove, collection, getDoc } from "firebase/firestore";
+import { doc, updateDoc, arrayRemove, collection, getDoc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { setSelectedChat } from "../../../reducers/userSlice";
 
@@ -58,7 +58,8 @@ const ChatsDropDown = () => {
       senderId: chatFiltered.senderId ,
       updatedAt: chatFiltered.updatedAt,
     };
-    
+    const chatRef = doc(db, "chats", selectedChat.chatId); 
+
     try {
       // Remove user from groupMembers array
       await updateDoc(userChatRefDoc, {
@@ -67,13 +68,14 @@ const ChatsDropDown = () => {
       await updateDoc(friendChatRef, {
         chats: arrayRemove(friendChatToRemove)
       });
-    
+      // Reference to the specific chat
+      await deleteDoc(chatRef);
       // Actions after successful removal
       toggleMenu();
       dispatch(setSelectedChat(null));
       toast.success("User Removed!");
     } catch (error) {
-      console.error("Error leaving group: ", error);
+      console.error("Error Removing User: ", error);
     }
   };
 

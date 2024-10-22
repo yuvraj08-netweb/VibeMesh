@@ -16,7 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ProfileImage from "../../Common/ProfileImage";
-import ChatsDropDown from "../Dropdowns/chatsDropDown";
+import ChatsDropDown from "../Dropdowns/ChatsDropDown";
 
 const ChatSelected = () => {
   const schema = yup.object().shape({
@@ -68,7 +68,7 @@ const ChatSelected = () => {
         behavior: "smooth",
         // block: "end",
       });
-  }, [chat.messages]);
+  }, [chat?.messages]);
 
   const handleSend = async (data) => {
     const chatsRef = collection(db, "chats");

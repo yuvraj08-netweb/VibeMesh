@@ -102,7 +102,7 @@ const SearchBar = ({ userChats, userDetails }) => {
 
       {/* Dropdown for search results */}
       {searchResults.length > 0 && (
-        <div className="dropdown w-[80%] bg-[white] text-[black] shadow-lg mt-2 rounded-xl absolute top-12 z-50">
+        <div className="dropdown w-[80%] bg-[white] text-[black] shadow-lg mt-2 rounded-xl absolute top-12 z-50 max-h-[250px] overflow-y-auto">
           {loading ? (
             <p className="p-3 text-center">Searching...</p>
           ) : (
