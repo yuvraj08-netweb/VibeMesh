@@ -115,11 +115,10 @@ const Tabs = () => {
                 >
                   {/* display all available chats */}
                   <div className="friendsCol">
-                    {
+                    {                      
                       chats.length>0 ?
                       
                       chats.map((chat)=>{
-                          
                           return (
                             <FriendsCard 
                             friend = {chat}

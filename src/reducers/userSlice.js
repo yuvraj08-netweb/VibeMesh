@@ -238,10 +238,11 @@ const userSlice = createSlice({
       state.groupMembers = [...state.groupMembers, action.payload];
     },
     deleteGroupMember: (state, action) => {
-      state.groupMembers = state.groupMembers.filter((member) => {
-        return member?.userId !== action.payload;
-      });
+      state.groupMembers = state.groupMembers.filter(
+        (member) => member.id !== action.payload
+      );
     },
+    
     setSelectedGroupChatData: (state, action) => {
       state.selectedGroupChatData = action.payload;
     },

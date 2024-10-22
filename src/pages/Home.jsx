@@ -1,20 +1,66 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../components/Common/Button";
 import ContactForm from "../components/Forms/ContactForm";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PageLoader from "../components/Common/PageLoader";
 import ProfileImage from "../components/Common/ProfileImage";
+import HomeDropDown from "../components/UserArea/Dropdowns/HomeDropDown";
+import { logOutUser } from "../reducers/userSlice";
 
 const Home = () => {
   const { isUser, userDetails, loading } = useSelector((state) => state.user);
   const [navOpen, setNavOpen] = useState(false);
+  const menuRef = useRef(null);
+
 
   const toggleNavOpen = () => {
     setNavOpen(!navOpen);
   };
 
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setNavOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   useEffect(() => {}, [isUser, userDetails]);
 
+  const dispatch = useDispatch();
+
+  const handleSignOut = () =>{
+    dispatch(logOutUser());
+  }
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Function to handle screen resize
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 640); // Example breakpoint for "mobile"
+  };
+
+  // Add event listener on component mount and clean it up on unmount
+  useEffect(() => {
+    handleResize(); // Set the initial state
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize); // Cleanup listener
+    };
+  }, []);
+
+  const checkMobileNav = () =>{
+    if(navOpen && isMobile){
+      return true;
+    }
+  }
+  
   return (
     <>
       {!loading ? (
@@ -69,21 +115,14 @@ const Home = () => {
                       </div>
                       <div className="userName">{userDetails.fullName}</div>
                       <div className="chatAreaBtn">
-                        <Button
-                          btnText={
-                            <>
-                              Chat &nbsp;
-                              <i className="fa-solid fa-chart-area"></i>
-                            </>
-                          }
-                          path="/userArea"
-                          className="border-none"
-                        />
+                        <HomeDropDown />
                       </div>
                     </div>
                   </>
                 )}
               </div>
+
+
               <div className="mobileNavToggler sm:hidden block">
                 <Button
                   btnText={
@@ -97,10 +136,10 @@ const Home = () => {
               </div>
             </nav>
 
-            {navOpen ? (
+            {checkMobileNav() ? (
               <div
                 data-aos="fade-right"
-                className="mobileNav fixed left-0 top-0 min-w-[300px] min-h-full bg-darkPurple z-20"
+                className="mobileNav fixed left-0 top-0 min-w-[300px] min-h-full bg-darkPurple z-20"  ref={menuRef}
               >
                 <div className="w-full text-center mt-10">
                   <h2 className="text-3xl">VibeMesh.</h2>
@@ -125,14 +164,14 @@ const Home = () => {
                         </>
                       )}
                     </li>
-                    <li>
+                    <li onClick={toggleNavOpen}>
                       <Button
                         btnText={"About"}
                         scrollTo="About"
                         className="border-none p-0 "
                       />
                     </li>
-                    <li>
+                    <li onClick={toggleNavOpen}>
                       <Button
                         btnText={"Contact"}
                         scrollTo="Contact"
@@ -143,23 +182,39 @@ const Home = () => {
                       {!isUser ? (
                         <>
                           <div className="btnContainer flex flex-col items-center gap-10">
-                            <Button btnText="Log In" path="/login" />
-                            <Button btnText="Sign Up" path="signup" />
+                            <Button 
+                            btnText="Log In" 
+                            path="/login" />
+                            <Button 
+                            btnText="Sign Up" path="signup" />
                           </div>
                         </>
                       ) : (
                         <>
-                          <div className="userLoggedIn flex flex-col tems-center gap-2">
+                          <div className="userLoggedIn flex flex-col tems-center gap-10">
                             <div className="chatAreaBtn">
                               <Button
                                 btnText={
                                   <>
-                                    Go To Chats &nbsp;
-                                    <i className="fa-solid fa-chart-area"></i>
+                                  
+                                    <i className="fa-brands fa-rocketchat"></i>
+                                    <span className="ml-3">Chats</span>
                                   </>
                                 }
                                 path="/userArea"
                                 className="border-none"
+                              />
+                            </div>
+                            <div className="LogOutBtn" onClick={toggleNavOpen}>
+                              <Button
+                                btnText={
+                                  <>
+                                    <i className="fa fa-right-from-bracket"></i>
+                                    <span className="ml-3">Log out</span>
+                                  </>
+                                }
+                                className="border-none"
+                                btnFun={handleSignOut}
                               />
                             </div>
                           </div>

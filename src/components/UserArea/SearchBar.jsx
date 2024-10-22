@@ -102,23 +102,23 @@ const SearchBar = ({ userChats, userDetails }) => {
 
       {/* Dropdown for search results */}
       {searchResults.length > 0 && (
-        <div className="dropdown w-[80%] bg-[white] text-[black] shadow-lg mt-2 rounded absolute top-12 z-50">
+        <div className="dropdown w-[80%] bg-[white] text-[black] shadow-lg mt-2 rounded-xl absolute top-12 z-50 max-h-[250px] overflow-y-auto">
           {loading ? (
             <p className="p-3 text-center">Searching...</p>
           ) : (
             searchResults.map((user) => (
               <div
                 key={user.id}
-                className="flex justify-between items-center p-2 border-b"
+                className="flex justify-between items-center p-2"
               >
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <img
                     src={user.avatar}
                     alt={user.fullName}
-                    className="w-8 h-8 rounded-full mr-2"
+                    className="w-10 h-10 rounded-full"
                     draggable = "false"
                   />
-                  <span>{user.fullName}</span>
+                  <span className="text-sm max-w-[90px]">{user.fullName}</span>
                 </div>
                 <div>
                   {isUserInChat(user.id) ? (

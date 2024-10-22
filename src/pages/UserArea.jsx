@@ -11,8 +11,6 @@ import Modal from "../components/UserArea/Modals/AddFriendModal";
 import InfoModal from "../components/UserArea/Modals/UserInfoModal";
 import GroupChatSelected from "../components/UserArea/Chats/GroupChatSelected";
 import SearchBar from "../components/UserArea/SearchBar";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/config";
 
 const UserArea = () => {
   const { userDetails, loading, selectedChat, userChats } = useSelector(
@@ -37,12 +35,6 @@ const UserArea = () => {
     dispatch(logOutUser())
       .unwrap()
       .then(async () => {
-
-        const userIdRef = doc(db, "Users", userDetails.id);
-        await updateDoc(userIdRef, {
-          FCM_Token: "",
-        });
-
         navigate("/login");
       });
   };
@@ -54,12 +46,13 @@ const UserArea = () => {
   const handleViewInfo = () => {
     setViewInfo(true);
   };
+  
   return (
     <div>
       {userDetails ? (
         <>
           <div className="userArea min-h-screen  w-full flex items-center text-[#fff]">
-            <div className="centerCard min-h-[90vh] w-[90%] m-auto">
+            <div className="centerCard min-h-[82vh] w-[90%] m-auto">
               <div className="innerContainer flex min-h-[inherit]">
                 {/* Left Side Area */}
                 <div

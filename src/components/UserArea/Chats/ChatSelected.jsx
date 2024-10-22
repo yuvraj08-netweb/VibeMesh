@@ -16,7 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ProfileImage from "../../Common/ProfileImage";
-import ChatsDropDown from "../Dropdowns/chatsDropDown";
+import ChatsDropDown from "../Dropdowns/ChatsDropDown";
 
 const ChatSelected = () => {
   const schema = yup.object().shape({
@@ -68,7 +68,7 @@ const ChatSelected = () => {
         behavior: "smooth",
         // block: "end",
       });
-  }, [chat.messages]);
+  }, [chat?.messages]);
 
   const handleSend = async (data) => {
     const chatsRef = collection(db, "chats");
@@ -100,7 +100,7 @@ const ChatSelected = () => {
     <>
       <div className="min-h-[100%]" data-aos="zoom-in-up">
         {/* Header Setion */}
-        <section className=" fixed top-0 header w-[-webkit-fill-available] flex justify-between items-center border-b p-3 ">
+        <section className="top-0 header w-[-webkit-fill-available] flex justify-between items-center border-b p-3 ">
           <div className="infoContainer flex items-center">
             <Button
               btnText={
@@ -132,8 +132,8 @@ const ChatSelected = () => {
         </section>
 
         {/* Chat Area */}
-        <section className="chatArea pt-[65px]">
-          <div className="messagesContainer max-h-[70vh] overflow-y-scroll p-5 ">
+        <section className="chatArea min-h-[62vh] ">
+          <div className="messagesContainer max-h-[62vh] overflow-y-scroll p-5 ">
             <ul className="">
               <li className="">
                 {chat?.messages?.length > 0 ? (
@@ -150,7 +150,7 @@ const ChatSelected = () => {
         </section>
 
         {/* Send Message Section */}
-        <section className="fixed bottom-0 w-[-webkit-fill-available] p-3 border-t z-50">
+        <section className=" bottom-0 w-[-webkit-fill-available] p-3 border-t z-50">
           <div
             className="messageInputAndSend 
              w-[-webkit-fill-available]

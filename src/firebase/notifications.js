@@ -18,7 +18,7 @@ export const generateToken = async () => {
 
     const token = await getToken(messaging, {
       vapidKey:
-        "BDtLUw5583Y5Mnhgs9ZbohBxNA1HMY2EjYoqwkNzKZqUdbFuflUfOwoNg12HePZfNx_2eF-fmcdjiqia70WtbZQ",
+      import.meta.env.VITE_VAPID_KEY,
       serviceWorkerRegistration: registration,
     });
 
