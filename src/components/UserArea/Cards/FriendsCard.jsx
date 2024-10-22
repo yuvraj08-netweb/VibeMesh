@@ -31,6 +31,8 @@ const FriendsCard = ({ friend }) => {
       new Notification("New Message", {
         body: `${friendData.fullName} ~ ${message.messageText}`,
       });
+      console.log("Notification Sent");
+      
     }
   };
 

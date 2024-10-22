@@ -3,7 +3,6 @@ import Button from "../../Common/Button";
 import InfoModal from "../Modals/UserInfoModal";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../../firebase/config";
-// eslint-disable-next-line no-unused-vars
 import { doc, updateDoc, arrayRemove, collection, getDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { setSelectedChat } from "../../../reducers/userSlice";

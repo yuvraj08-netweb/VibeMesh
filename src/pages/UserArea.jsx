@@ -11,8 +11,6 @@ import Modal from "../components/UserArea/Modals/AddFriendModal";
 import InfoModal from "../components/UserArea/Modals/UserInfoModal";
 import GroupChatSelected from "../components/UserArea/Chats/GroupChatSelected";
 import SearchBar from "../components/UserArea/SearchBar";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/config";
 
 const UserArea = () => {
   const { userDetails, loading, selectedChat, userChats } = useSelector(
@@ -37,12 +35,6 @@ const UserArea = () => {
     dispatch(logOutUser())
       .unwrap()
       .then(async () => {
-
-        const userIdRef = doc(db, "Users", userDetails.id);
-        await updateDoc(userIdRef, {
-          FCM_Token: "",
-        });
-
         navigate("/login");
       });
   };
