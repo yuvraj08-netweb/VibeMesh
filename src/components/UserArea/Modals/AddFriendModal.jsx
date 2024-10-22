@@ -68,7 +68,7 @@ const Modal = ({ open, onClose }) => {
 
     const imgUrl =
       (await Upload(img)) ||
-      "https://png.pngtree.com/png-vector/20220623/ourmid/pngtree-business-working-team-people-approach-under-building-concourse-windows-png-image_5181530.png";
+      "https://media.gettyimages.com/id/1220651278/vector/a-group-of-people-in-a-meeting-with-the-boss-wearing-a-tie.jpg?s=2048x2048&w=gi&k=20&c=AoA14V0_Qd-XhrM_RcRyuElL0EQNgRuod5d0La9QG1M=";
 
     const groupInfo = {
       groupName: gName,

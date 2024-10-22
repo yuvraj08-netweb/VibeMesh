@@ -7,13 +7,13 @@ import {
   deleteGroupMember,
 } from "../../../reducers/userSlice";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ProfileImage from "../../Common/ProfileImage"
 
 const UserCard = ({ func, user, from = "" }) => {
-  const [memberAdded, setMemberAdded] = useState(false);
+  const { userDetails,groupMembers} = useSelector((state) => state.user);
 
-  const { userDetails} = useSelector((state) => state.user);
+  const isMember = groupMembers.some((member) => member.id === user.id);
 
   const dispatch = useDispatch();
 
@@ -35,12 +35,11 @@ const UserCard = ({ func, user, from = "" }) => {
       avatar: user.avatar,
     };
 
-    if (memberAdded) {
-      setMemberAdded(false);
+   
+    if (isMember) {
       dispatch(deleteGroupMember(user.id));
     } else {
       dispatch(addGroupMembers(userData));
-      setMemberAdded(true);
     }
   };
 
@@ -61,7 +60,7 @@ const UserCard = ({ func, user, from = "" }) => {
         <div className="addBtn">
           <Button
             btnText={
-              memberAdded ? (
+              isMember ? (
                 <>
                   <i className="fa-solid fa-check"></i>
                 </>
